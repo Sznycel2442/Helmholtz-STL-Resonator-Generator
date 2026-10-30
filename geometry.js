@@ -1,8 +1,9 @@
 const SPEED_AT_ZERO = 331.3;
 
 function calculate(input) {
-  const n = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, key === 'shape' || key === 'environment' || key === 'neckDirection' ? value : Number(value)]));
+  const n = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, key === 'shape' || key === 'environment' || key === 'neckDirection' || key === 'coverPlacement' ? value : Number(value)]));
   n.neckDirection ||= 'outward';
+  n.coverPlacement ||= 'neck';
   n.pinClearance ??= 0.25;
   const errors = [];
   const positive = {
@@ -26,7 +27,8 @@ function calculate(input) {
   const innerWidth = n.shape === 'box' ? n.width - 2 * n.wall : n.diameter - 2 * n.wall;
   const innerDepth = n.shape === 'box' ? n.depth - 2 * n.wall : n.shape === 'hex' ? 2 * innerWidth / Math.sqrt(3) : innerWidth;
   if (innerWidth <= 0 || innerDepth <= 0) errors.push('Ścianka jest zbyt gruba względem korpusu.');
-  if (n.neckLength <= n.lid) errors.push('Długość szyjki musi być większa od grubości pokrywy.');
+  const neckWall = n.coverPlacement === 'back' ? n.bottom : n.lid;
+  if (n.neckLength <= neckWall) errors.push('Długość szyjki musi być większa od grubości ścianki z szyjką.');
   if (n.neckDiameter + 2 * n.wall >= Math.min(innerWidth, innerDepth)) errors.push('Szyjka jest zbyt szeroka dla wnętrza korpusu.');
   if (errors.length) return { errors };
 
@@ -36,7 +38,7 @@ function calculate(input) {
   const soundSpeed = (SPEED_AT_ZERO + 0.606 * n.temperature) * 1000;
   const volume = area / effectiveLength * (soundSpeed / (2 * Math.PI * n.frequency)) ** 2;
   const section = n.shape === 'round' ? Math.PI * (innerWidth / 2) ** 2 : n.shape === 'hex' ? Math.sqrt(3) / 2 * innerWidth ** 2 : innerWidth * innerDepth;
-  const neckExtension = n.neckLength - n.lid;
+  const neckExtension = n.neckLength - neckWall;
   const inward = n.neckDirection === 'inward';
   const displacedVolume = inward ? Math.PI * (radius + n.wall) ** 2 * neckExtension : 0;
   const cavityHeight = (volume + displacedVolume) / section;
@@ -52,17 +54,20 @@ function calculate(input) {
   const fitsXY = normalFit || rotatedFit;
   if (!fitsXY) errors.push('Podstawa i pokrywa nie mieszczą się na stole XY z zadanym marginesem.');
   if (baseHeight > availableZ) errors.push('Baza jest zbyt wysoka dla pola roboczego Z.');
-  if (n.neckLength > availableZ) errors.push('Pokrywa z szyjką jest zbyt wysoka dla pola roboczego Z.');
+  const lidHeight = n.coverPlacement === 'back' ? n.lid : n.neckLength;
+  const neckPrintHeight = n.coverPlacement === 'back' && !inward ? n.neckLength : 0;
+  if (lidHeight > availableZ) errors.push('Pokrywa jest zbyt wysoka dla pola roboczego Z.');
+  if (neckPrintHeight > availableZ) errors.push('Osobna szyjka jest zbyt wysoka dla pola roboczego Z.');
   if (dowelLength > availableZ) errors.push('Kołki są zbyt wysokie dla pola roboczego Z.');
   if (cavityHeight < 3) errors.push('Komora ma mniej niż 3 mm wysokości; zmniejsz częstotliwość lub podstawę.');
   if (baseHeight < socketDepth + 1.5) errors.push('Baza jest za niska na gniazda kołków.');
   if (inward && tipClearance < Math.max(8, radius)) errors.push('Wewnętrzna szyjka jest za blisko dna.');
   return {
     errors, input: n, volume, section, cavityHeight, baseHeight, displacedVolume, tipClearance,
-    lidHeight: n.neckLength, effectiveLength, soundSpeed,
+    lidHeight, neckPrintHeight, effectiveLength, soundSpeed,
     innerWidth, innerDepth, footprintX, footprintY,
     orientation: normalFit ? 'standard' : rotatedFit ? 'obróć o 90°' : 'brak',
-    externalNeck: neckExtension,
+    externalNeck: neckExtension, portClearance: 0.25,
     dowelDiameter, dowelLength, socketDiameter, socketDepth,
     dowelCount: n.shape === 'hex' ? 6 : 4,
   };
@@ -71,6 +76,7 @@ function calculate(input) {
 function autoDesign(raw) {
   const shape = raw.shape || 'round';
   const neckDirection = raw.neckDirection || 'outward';
+  const coverPlacement = raw.coverPlacement || 'neck';
   const frequency = Number(raw.frequency);
   const bedX = Number(raw.bedX), bedY = Number(raw.bedY), bedZ = Number(raw.bedZ);
   const margin = 5, wall = 7, bottom = 3, lid = 7;
@@ -96,11 +102,12 @@ function autoDesign(raw) {
       ? [...new Set([Math.max(14, 1.5 * neckDiameter), Math.max(10, neckDiameter), 8])]
       : [Math.max(14, 1.5 * neckDiameter)];
     for (const neckLength of lengths) {
-      const common = { shape, neckDirection, frequency, temperature, neckDiameter, neckLength, wall, bottom, lid, bedX, bedY, bedZ, margin, pinClearance, environment: raw.environment || 'indoor' };
+      const common = { shape, neckDirection, coverPlacement, frequency, temperature, neckDiameter, neckLength, wall, bottom, lid, bedX, bedY, bedZ, margin, pinClearance, environment: raw.environment || 'indoor' };
       const trial = calculate({ ...common, ...size(maxScale) });
-      if (!Number.isFinite(trial.volume) || trial.lidHeight > bedZ - margin) continue;
+      if (!Number.isFinite(trial.volume) || trial.lidHeight > bedZ - margin || trial.neckPrintHeight > bedZ - margin) continue;
       const grossVolume = trial.volume + trial.displacedVolume;
-      const minHeight = neckDirection === 'inward' ? neckLength - lid + Math.max(8, neckDiameter / 2) : 3;
+      const neckWall = coverPlacement === 'back' ? bottom : lid;
+      const minHeight = neckDirection === 'inward' ? neckLength - neckWall + Math.max(8, neckDiameter / 2) : 3;
       const maxHeight = bedZ - margin - bottom;
       if (maxHeight < minHeight || grossVolume / sectionAt(maxScale) > maxHeight) continue;
       if (grossVolume / sectionAt(minScale) < minHeight) { tooShallow = true; continue; }
@@ -277,11 +284,28 @@ function ringWithSockets(mesh, outer, inner, z, top, result, socketDirection) {
 function makeBase(result) {
   const { outer, inner } = paths(result);
   const mesh = [];
-  const { bottom } = result.input;
+  const { bottom, neckLength, neckDirection, coverPlacement } = result.input;
   side(mesh, outer, 0, result.baseHeight);
   side(mesh, inner, bottom, result.baseHeight, true);
-  cap(mesh, outer, 0, false);
-  cap(mesh, inner, bottom, true);
+  if (coverPlacement === 'back') {
+    const { hole, neck } = lidPaths(result);
+    if (neckDirection === 'inward') {
+      ring(mesh, outer, hole, 0, false);
+      ring(mesh, inner, neck, bottom, true);
+      side(mesh, hole, 0, neckLength, true);
+      side(mesh, neck, bottom, neckLength);
+      ring(mesh, neck, hole, neckLength, true);
+    } else {
+      const angles = outer.map(([x, y]) => Math.atan2(y, x));
+      const port = circle(result.input.neckDiameter / 2 + result.input.wall + result.portClearance, angles);
+      ring(mesh, outer, port, 0, false);
+      ring(mesh, inner, port, bottom, true);
+      side(mesh, port, 0, bottom, true);
+    }
+  } else {
+    cap(mesh, outer, 0, false);
+    cap(mesh, inner, bottom, true);
+  }
   ringWithSockets(mesh, outer, inner, result.baseHeight, true, result, -1);
   return mesh;
 }
@@ -289,8 +313,14 @@ function makeLid(result) {
   const { outer, hole, neck } = lidPaths(result);
   const inner = paths(result).inner;
   const mesh = [];
-  const { lid, neckLength } = result.input;
+  const { lid, neckLength, coverPlacement } = result.input;
   side(mesh, outer, 0, lid);
+  if (coverPlacement === 'back') {
+    cap(mesh, outer, 0, false);
+    ringWithSockets(mesh, outer, inner, lid, true, result, -1);
+    cap(mesh, inner, lid, true);
+    return mesh;
+  }
   side(mesh, hole, 0, neckLength, true);
   side(mesh, neck, lid, neckLength);
   if (result.input.neckDirection === 'inward') {
@@ -303,6 +333,19 @@ function makeLid(result) {
     ring(mesh, outer, neck, lid, true);
   }
   ring(mesh, neck, hole, neckLength, true);
+  return mesh;
+}
+
+function makeNeck(result) {
+  if (result.input.coverPlacement !== 'back' || result.input.neckDirection !== 'outward') return [];
+  const angles = Array.from({ length: 64 }, (_, i) => 2 * Math.PI * i / 64);
+  const inner = circle(result.input.neckDiameter / 2, angles);
+  const outer = circle(result.input.neckDiameter / 2 + result.input.wall, angles);
+  const mesh = [];
+  side(mesh, outer, 0, result.input.neckLength);
+  side(mesh, inner, 0, result.input.neckLength, true);
+  ring(mesh, outer, inner, 0, false);
+  ring(mesh, outer, inner, result.input.neckLength, true);
   return mesh;
 }
 

@@ -12,78 +12,114 @@
   <div class="app-shell">
     <header class="masthead">
       <div class="mark" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div>
-        <p class="eyebrow">PROJEKTOWANIE DO DRUKU 3D</p>
-        <h1>Rezonator Helmholtza</h1>
-        <p class="lead">Podaj częstotliwość. Generator sam dobierze komorę i szyjkę oraz przygotuje trzy pliki STL.</p>
+      <div class="masthead-copy">
+        <p class="eyebrow" data-i18n="eyebrow">PROJEKTOWANIE DO DRUKU 3D</p>
+        <h1 data-i18n="title">Rezonator Helmholtza</h1>
+        <p class="lead" data-i18n="lead">Podaj częstotliwość. Generator dobierze wymiary i przygotuje modele STL.</p>
       </div>
+      <select id="language" class="language-select" aria-label="Language / Język"><option value="pl">PL</option><option value="en">EN</option></select>
     </header>
 
     <main class="layout">
       <form id="config" class="panel controls" novalidate>
-        <div class="panel-heading"><span class="step">01</span><div><h2>Zaprojektuj</h2><p>Wystarczą częstotliwość i kształt.</p></div></div>
+        <div class="panel-heading"><span class="step">01</span><div><h2 data-i18n="designTitle">Zaprojektuj</h2><p data-i18n="designSubtitle">Wybierz częstotliwość i układ.</p></div></div>
 
         <section class="form-section primary-section">
-          <label class="frequency-label" for="frequency">Częstotliwość docelowa</label>
+          <label class="frequency-label" for="frequency" data-i18n="frequencyLabel">Częstotliwość docelowa</label>
           <div class="frequency-input"><input id="frequency" name="frequency" type="number" min="1" step="1" value="120" required><span>Hz</span></div>
-          <p class="hint">Wysokość komory, szerokość korpusu i szyjka dobierają się automatycznie.</p>
+          <p class="hint" data-i18n="frequencyHint">Wymiary komory i szyjki dobierają się automatycznie.</p>
         </section>
 
         <section class="form-section shape-section">
-          <h3>Kształt korpusu</h3>
-          <div class="shape-switch" role="group" aria-label="Kształt korpusu">
-            <label><input type="radio" name="shape" value="round" checked><span><i class="shape-icon round-icon"></i>Okrągły</span></label>
-            <label><input type="radio" name="shape" value="box"><span><i class="shape-icon box-icon"></i>Prostokątny</span></label>
-            <label><input type="radio" name="shape" value="hex"><span><i class="shape-icon hex-icon"></i>Heksagonalny</span></label>
+          <h3 data-i18n="shapeTitle">Kształt korpusu</h3>
+          <div class="shape-switch" role="group" aria-label="Kształt korpusu" data-i18n-aria="shapeTitle">
+            <label><input type="radio" name="shape" value="round" checked><span><i class="shape-icon round-icon"></i><b data-i18n="shapeRound">Okrągły</b></span></label>
+            <label><input type="radio" name="shape" value="box"><span><i class="shape-icon box-icon"></i><b data-i18n="shapeBox">Prostokątny</b></span></label>
+            <label><input type="radio" name="shape" value="hex"><span><i class="shape-icon hex-icon"></i><b data-i18n="shapeHex">Heksagonalny</b></span></label>
           </div>
         </section>
 
         <section class="form-section direction-section">
-          <h3>Kierunek szyjki</h3>
-          <div class="shape-switch direction-switch" role="group" aria-label="Kierunek szyjki">
-            <label><input type="radio" name="neckDirection" value="outward" checked><span>Na zewnątrz</span></label>
-            <label><input type="radio" name="neckDirection" value="inward"><span>Do środka</span></label>
+          <h3 data-i18n="neckDirectionTitle">Kierunek szyjki</h3>
+          <div class="shape-switch direction-switch" role="group" aria-label="Kierunek szyjki" data-i18n-aria="neckDirectionTitle">
+            <label><input type="radio" name="neckDirection" value="outward" checked><span data-i18n="outward">Na zewnątrz</span></label>
+            <label><input type="radio" name="neckDirection" value="inward"><span data-i18n="inward">Do środka</span></label>
           </div>
         </section>
 
+        <section class="form-section direction-section cover-section">
+          <h3 data-i18n="coverPlacementTitle">Miejsce pokrywy</h3>
+          <div class="shape-switch direction-switch" role="group" aria-label="Miejsce pokrywy" data-i18n-aria="coverPlacementTitle">
+            <label><input type="radio" name="coverPlacement" value="neck" checked><span data-i18n="coverNeck">Przy szyjce</span></label>
+            <label><input type="radio" name="coverPlacement" value="back"><span data-i18n="coverBack">Tylna ścianka</span></label>
+          </div>
+          <p class="hint" id="cover-hint"></p>
+        </section>
+
         <details class="advanced">
-          <summary>Ustawienia drukarki i materiału <span>⌄</span></summary>
+          <summary><b data-i18n="settingsSummary">Drukarka i warunki pracy</b><span>⌄</span></summary>
           <div class="advanced-content">
-            <h3>Pole robocze drukarki</h3>
+            <h3 data-i18n="printerVolumeTitle">Pole robocze drukarki</h3>
             <div class="field-grid three">
               <label class="field"><span>X <em>mm</em></span><input name="bedX" type="number" min="1" step="1" value="256" required></label>
               <label class="field"><span>Y <em>mm</em></span><input name="bedY" type="number" min="1" step="1" value="256" required></label>
               <label class="field"><span>Z <em>mm</em></span><input name="bedZ" type="number" min="1" step="1" value="256" required></label>
             </div>
-            <h3 class="spaced-title">Spasowanie kołków</h3>
-            <label class="field"><span>Luz na stronę <em>mm</em></span><input name="pinClearance" type="number" min="0.1" max="0.4" step="0.05" value="0.25" required></label>
-            <h3 class="spaced-title">Warunki pracy</h3>
-            <label class="field"><span>Materiał do warunków</span><select name="environment"><option value="indoor">Wewnątrz</option><option value="warm">Wyższa temperatura</option><option value="outdoor">Na zewnątrz / w słońcu</option></select></label>
-            <label class="field spaced"><span>Temperatura powietrza <em>°C</em></span><input name="temperature" type="number" min="-20" max="50" step="1" value="20" required></label>
+            <h3 class="spaced-title" data-i18n="dowelFitTitle">Spasowanie kołków</h3>
+            <label class="field"><span><b data-i18n="dowelClearanceLabel">Luz na stronę</b><em>mm</em></span><input name="pinClearance" type="number" min="0.1" max="0.4" step="0.05" value="0.25" required></label>
+            <h3 class="spaced-title" data-i18n="conditionsTitle">Warunki pracy</h3>
+            <label class="field"><span data-i18n="environmentLabel">Materiał do warunków</span><select name="environment"><option value="indoor" data-i18n="indoor">Wewnątrz</option><option value="warm" data-i18n="warm">Wyższa temperatura</option><option value="outdoor" data-i18n="outdoor">Na zewnątrz / w słońcu</option></select></label>
+            <label class="field spaced"><span><b data-i18n="temperatureLabel">Temperatura powietrza</b><em>°C</em></span><input name="temperature" type="number" min="-20" max="50" step="1" value="20" required></label>
           </div>
         </details>
       </form>
 
       <div class="results-column">
         <section class="panel result-panel" aria-live="polite">
-          <div class="panel-heading"><span class="step">02</span><div><h2>Gotowy projekt</h2><p id="status-text">Przeliczanie…</p></div></div>
+          <div class="panel-heading"><span class="step">02</span><div><h2 data-i18n="resultTitle">Gotowy projekt</h2><p id="status-text"></p></div></div>
           <div id="error-box" class="error-box hidden" role="alert"></div>
           <div id="result-content">
-            <div class="hero-result"><div><span>Objętość komory</span><strong id="volume">—</strong></div><span id="fit-badge" class="fit-badge">—</span></div>
+            <div class="hero-result"><div><span data-i18n="cavityVolume">Objętość komory</span><strong id="volume">—</strong></div><span id="fit-badge" class="fit-badge">—</span></div>
             <div class="drawing" id="drawing" role="img" aria-label="Schemat rezonatora"></div>
             <div class="stats" id="stats"></div>
           </div>
         </section>
 
         <section class="panel export-panel">
-          <div class="panel-heading"><span class="step">03</span><div><h2>Pliki do druku</h2><p>Trzy osobne wydruki, bez podpór w komorze.</p></div></div>
-          <div class="part-list"><div><span class="part-icon">▣</span><div><strong>Baza z gniazdami</strong><small>Druk dnem na stole</small></div></div><div><span class="part-icon">◉</span><div><strong>Pokrywa z gniazdami i szyjką</strong><small id="lid-print-note">Druk wewnętrzną stroną na stole</small></div></div><div><span class="part-icon">●</span><div><strong id="dowel-part-name">Kołki ×4</strong><small id="dowel-print-note">Druk pionowo, osobny plik STL</small></div></div></div>
-          <div class="export-actions"><button type="button" id="download-base">Pobierz bazę STL <span>↓</span></button><button type="button" id="download-lid">Pobierz pokrywę STL <span>↓</span></button><button type="button" id="download-dowels">Pobierz kołki STL <span>↓</span></button></div>
-          <p class="assembly-note">Wsuń kołki w gniazda bazy, załóż pokrywę i sklej płaski styk szczelnie. Gniazda są nieco głębsze od połowy kołka.</p>
+          <div class="panel-heading"><span class="step">03</span><div><h2 data-i18n="filesTitle">Pliki do druku</h2><p id="export-subtitle"></p></div></div>
+          <div class="part-list">
+            <div><span class="part-icon">▣</span><div><strong id="base-part-name"></strong><small id="base-print-note"></small></div></div>
+            <div><span class="part-icon">◉</span><div><strong id="lid-part-name"></strong><small id="lid-print-note"></small></div></div>
+            <div><span class="part-icon">●</span><div><strong id="dowel-part-name"></strong><small id="dowel-print-note"></small></div></div>
+            <div id="neck-part" class="hidden"><span class="part-icon">◌</span><div><strong id="neck-part-name"></strong><small id="neck-print-note"></small></div></div>
+          </div>
+          <div class="export-actions">
+            <button type="button" id="download-base"><span data-i18n="downloadBase">Pobierz bazę STL</span><span>↓</span></button>
+            <button type="button" id="download-lid"><span data-i18n="downloadLid">Pobierz pokrywę STL</span><span>↓</span></button>
+            <button type="button" id="download-dowels"><span data-i18n="downloadDowels">Pobierz kołki STL</span><span>↓</span></button>
+            <button type="button" id="download-neck" class="hidden"><span data-i18n="downloadNeck">Pobierz szyjkę STL</span><span>↓</span></button>
+          </div>
+          <p class="assembly-note" id="assembly-note"></p>
         </section>
 
-        <section class="material-card"><div class="material-icon">M</div><div><span class="eyebrow">ZALECANY MATERIAŁ</span><h2 id="material-name">PETG</h2><p id="material-description"></p></div></section>
-        <p class="method-note">Częstotliwość jest obliczona z przybliżonego modelu Helmholtza z korekcją końców szyjki. Gotowy wydruk warto zmierzyć po sklejeniu. <a href="https://phys.unsw.edu.au/jw/Helmholtz.html" target="_blank" rel="noopener">Podstawa wzoru</a> · <a href="https://help.prusa3d.com/filament-material-guide" target="_blank" rel="noopener">Materiały</a></p>
+        <section class="material-card"><div class="material-icon">M</div><div><span class="eyebrow" data-i18n="materialTitle">ZALECANY MATERIAŁ</span><h2 id="material-name">PETG</h2><p id="material-description"></p></div></section>
+
+        <section class="panel print-panel">
+          <div class="panel-heading"><span class="step">04</span><div><h2 data-i18n="printTitle">Ustawienia druku</h2><p data-i18n="printSubtitle">Punkt wyjścia dla dyszy 0,4 mm</p></div></div>
+          <div class="print-grid">
+            <div><span data-i18n="layerLabel">Warstwa</span><strong data-i18n="layerValue">0,20 mm</strong></div>
+            <div><span data-i18n="wallsLabel">Obrysy</span><strong>5–6</strong></div>
+            <div><span data-i18n="infillLabel">Wypełnienie</span><strong data-i18n="infillValue">30% gyroid</strong></div>
+            <div><span data-i18n="solidLabel">Pełne warstwy góra/dół</span><strong>8 / 8</strong></div>
+            <div><span data-i18n="dowelInfillLabel">Kołki</span><strong data-i18n="dowelInfillValue">100% wypełnienia</strong></div>
+            <div><span data-i18n="supportsLabel">Podpory</span><strong data-i18n="supportsValue">Wyłączone</strong></div>
+          </div>
+          <p class="print-cavity-note" data-i18n="printCavityNote">Wypełnienie dotyczy ścianek i pokrywy; komora pozostaje pusta.</p>
+          <p id="print-advice" class="print-advice"></p>
+          <p class="print-sources"><a href="https://help.prusa3d.com/article/watertight-prints_112324" target="_blank" rel="noopener" data-i18n="sourceAirtight">Szczelność wydruków</a> · <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748" target="_blank" rel="noopener" data-i18n="sourceLayers">Warstwy i obrysy</a></p>
+        </section>
+
+        <p class="method-note"><span data-i18n="methodNote">Obliczenia korzystają z przybliżonego modelu Helmholtza. Gotowy wydruk warto zmierzyć po uszczelnieniu połączeń.</span> <a href="https://phys.unsw.edu.au/jw/Helmholtz.html" target="_blank" rel="noopener" data-i18n="sourceFormula">Podstawa wzoru</a> · <a href="https://help.prusa3d.com/filament-material-guide" target="_blank" rel="noopener" data-i18n="sourceMaterials">Materiały</a></p>
       </div>
     </main>
   </div>
@@ -92,7 +128,9 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const status = document.querySelector('#status-text');
-      if (status.textContent === 'Przeliczanie…') status.textContent = 'Nie udało się uruchomić obliczeń. Odśwież stronę.';
+      if (!status.textContent) status.textContent = document.querySelector('#language').value === 'en'
+        ? 'Could not start the calculator. Reload the page.'
+        : 'Nie udało się uruchomić obliczeń. Odśwież stronę.';
     });
   </script>
 </body>
