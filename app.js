@@ -5,6 +5,16 @@ const COPY = {
     designTitle: 'Zaprojektuj', designSubtitle: 'Wybierz częstotliwość i układ.',
     frequencyLabel: 'Częstotliwość docelowa', frequencyHint: 'Wymiary komory i szyjki dobierają się automatycznie.',
     shapeTitle: 'Kształt korpusu', shapeRound: 'Okrągły', shapeBox: 'Prostokątny', shapeHex: 'Heksagonalny',
+    shapeEllipse: 'Eliptyczny', shapeOctagon: 'Ośmiokątny', shapeRounded: 'Zaokrąglony', shapeSvg: 'Z pliku SVG',
+    proportionsTitle: 'Proporcje korpusu', widthFactorLabel: 'Szerokość', depthFactorLabel: 'Głębokość', heightFactorLabel: 'Wysokość',
+    proportionsHint: 'Wysokość 0,5× daje płytszy korpus, 2× wyższy. Objętość komory pozostaje zgodna z częstotliwością.',
+    svgTitle: 'Własny obrys SVG', svgLabel: 'Jeden zamknięty, wypukły obrys', svgHint: 'Wybierz kształt „Z pliku SVG”, a następnie wczytaj plik.',
+    svgLoaded: 'Wczytano obrys:', svgInvalid: 'Nie udało się wczytać SVG. Użyj jednego zamkniętego obrysu bez transformacji.',
+    svgConcave: 'Obrys musi być wypukły i nie może mieć otworów.', svgOpen: 'Ścieżka SVG musi być zamknięta.',
+    wallMountTitle: 'Mocowanie do ściany', wallMountLabel: 'Dodaj mocowania typu keyhole i kołki do oznaczenia wiercenia',
+    wallMountHint: 'Dwie płytki i cztery dystanse do przyklejenia na tylnej ściance; dwa kołki do oznaczenia otworów. Po sklejeniu sprawdź nośność.',
+    mountPart: 'Mocowania i znaczniki wiercenia', mountNote: '2 płytki 30×50×3 mm, 4 dystanse 6×40×4 mm, 2 znaczniki. Łeb śruby ≤8 mm, trzpień ≤4 mm.',
+    downloadMount: 'Pobierz mocowania ZIP', mountAssembly: ' Dystanse i płytki przyklej symetrycznie do płaskiej tylnej strony, wąską szczeliną ku górze. Znaczniki włóż przez duże otwory, przesuń do końca szczelin i dociśnij do ściany, aby zaznaczyć punkty wiercenia.',
     neckDirectionTitle: 'Kierunek szyjki', outward: 'Na zewnątrz', inward: 'Do środka',
     coverPlacementTitle: 'Miejsce pokrywy', coverNeck: 'Przy szyjce', coverBack: 'Tylna ścianka',
     settingsSummary: 'Drukarka i warunki pracy', printerVolumeTitle: 'Pole robocze drukarki',
@@ -13,7 +23,8 @@ const COPY = {
     indoor: 'Wewnątrz', warm: 'Wyższa temperatura', outdoor: 'Na zewnątrz / w słońcu',
     temperatureLabel: 'Temperatura powietrza', resultTitle: 'Gotowy projekt', cavityVolume: 'Objętość komory',
     filesTitle: 'Pliki do druku', downloadBase: 'Pobierz bazę STL', downloadLid: 'Pobierz pokrywę STL',
-    downloadDowels: 'Pobierz kołki STL', downloadNeck: 'Pobierz szyjkę STL', materialTitle: 'ZALECANY MATERIAŁ',
+    downloadDowels: 'Pobierz kołki STL', downloadNeck: 'Pobierz szyjkę STL', downloadJoiner: 'Pobierz łącznik STL', materialTitle: 'ZALECANY MATERIAŁ',
+    downloadBaseZip: 'Pobierz segmenty bazy ZIP', downloadLidZip: 'Pobierz segmenty pokrywy ZIP',
     printTitle: 'Ustawienia druku', printSubtitle: 'Punkt wyjścia dla dyszy 0,4 mm',
     layerLabel: 'Warstwa', layerValue: '0,20 mm', wallsLabel: 'Obrysy', infillLabel: 'Wypełnienie',
     infillValue: '30% gyroid', solidLabel: 'Pełne warstwy góra/dół',
@@ -32,7 +43,14 @@ const COPY = {
     printAdviceASA: 'Drukuj w zamkniętej komorze; przy dużej podstawie dodaj brim 5–8 mm. Po montażu uszczelnij wszystkie styki.',
     neckGlueAdvice: ' Osobną szyjkę wklej tak, aby jej wewnętrzny koniec był na równo z dnem komory.',
     autoFit: 'Wymiary dobrane automatycznie do drukarki.', fixParams: 'Popraw parametry, aby pobrać STL.',
-    fit: 'Mieści się na stole', rotate: 'Obróć o 90° na stole',
+    fit: 'Mieści się na stole', rotate: 'Obróć o 90° na stole', segmented: 'Podzielony do druku',
+    splitNote: 'Podział: {x} × {y} na stole, {z} sekcji wysokości. Każdy segment mieści się na drukarce.',
+    segmentedParts: 'Podzielone części są eksportowane jako osobne STL w archiwach ZIP.',
+    partsMount: 'Części rezonatora i dodatkowy zestaw mocowań.',
+    joinerPart: 'Łącznik klejony', joinerNote: '24×8×2 mm; drukuj po dwa na styk segmentów XY i przyklej na płaskiej zewnętrznej stronie.',
+    zDowelNote: 'Drukuj {count} zestawów kołków dla połączeń poziomych i pokrywy.',
+    seamAssembly: ' Styki segmentów sklej i uszczelnij; łączniki przyklej na zewnętrznej płaskiej stronie.',
+    generatingFiles: 'Przygotowuję pliki STL…', exportFailed: 'Nie udało się przygotować części. Zmień proporcje i spróbuj ponownie.',
     topView: 'widok od wlotu', neckLabel: 'szyjka', cavityLabel: 'komora', betweenFlats: 'między bokami',
     baseSockets: 'Baza z gniazdami', baseNeck: 'Korpus z szyjką i gniazdami', basePort: 'Korpus z otworem i gniazdami',
     neckLid: 'Pokrywa z szyjką i gniazdami', rearLid: 'Pokrywa tylna z gniazdami',
@@ -59,6 +77,16 @@ const COPY = {
     designTitle: 'Design', designSubtitle: 'Choose a frequency and layout.',
     frequencyLabel: 'Target frequency', frequencyHint: 'Cavity and neck dimensions are selected automatically.',
     shapeTitle: 'Body shape', shapeRound: 'Round', shapeBox: 'Rectangular', shapeHex: 'Hexagonal',
+    shapeEllipse: 'Elliptical', shapeOctagon: 'Octagonal', shapeRounded: 'Rounded', shapeSvg: 'From SVG file',
+    proportionsTitle: 'Body proportions', widthFactorLabel: 'Width', depthFactorLabel: 'Depth', heightFactorLabel: 'Height',
+    proportionsHint: 'Height 0.5× makes a shallower body; 2× makes it taller. Cavity volume stays matched to the frequency.',
+    svgTitle: 'Custom SVG outline', svgLabel: 'One closed, convex outline', svgHint: 'Select “From SVG file”, then load an SVG.',
+    svgLoaded: 'Loaded outline:', svgInvalid: 'Could not read the SVG. Use one closed outline without transforms.',
+    svgConcave: 'The outline must be convex and contain no holes.', svgOpen: 'The SVG path must be closed.',
+    wallMountTitle: 'Wall mounting', wallMountLabel: 'Add keyhole mounts and drill marking pins',
+    wallMountHint: 'Glue two plates and four spacers to the flat back; use two pointed pins to mark the drill positions. Check the bond before hanging.',
+    mountPart: 'Mounts and drill markers', mountNote: '2 plates 30×50×3 mm, 4 spacers 6×40×4 mm, 2 markers. Screw head ≤8 mm, shank ≤4 mm.',
+    downloadMount: 'Download mounts ZIP', mountAssembly: ' Glue the spacers and plates symmetrically to the flat back, with the narrow slots pointing up. Insert the markers through the large openings, slide them to the ends of the narrow slots, and press against the wall to mark the drill points.',
     neckDirectionTitle: 'Neck direction', outward: 'Outward', inward: 'Into cavity',
     coverPlacementTitle: 'Cover location', coverNeck: 'Neck side', coverBack: 'Back wall',
     settingsSummary: 'Printer and conditions', printerVolumeTitle: 'Printer build volume',
@@ -67,7 +95,8 @@ const COPY = {
     indoor: 'Indoors', warm: 'Higher temperature', outdoor: 'Outdoors / sunlight',
     temperatureLabel: 'Air temperature', resultTitle: 'Design result', cavityVolume: 'Cavity volume',
     filesTitle: 'Print files', downloadBase: 'Download base STL', downloadLid: 'Download cover STL',
-    downloadDowels: 'Download dowels STL', downloadNeck: 'Download neck STL', materialTitle: 'RECOMMENDED MATERIAL',
+    downloadDowels: 'Download dowels STL', downloadNeck: 'Download neck STL', downloadJoiner: 'Download joiner STL', materialTitle: 'RECOMMENDED MATERIAL',
+    downloadBaseZip: 'Download base segments ZIP', downloadLidZip: 'Download cover segments ZIP',
     printTitle: 'Print settings', printSubtitle: 'Starting point for a 0.4 mm nozzle',
     layerLabel: 'Layer height', layerValue: '0.20 mm', wallsLabel: 'Perimeters', infillLabel: 'Infill',
     infillValue: '30% gyroid', solidLabel: 'Top / bottom solid layers',
@@ -86,7 +115,14 @@ const COPY = {
     printAdviceASA: 'Print in an enclosure; add a 5–8 mm brim for a large footprint. Seal every joint after assembly.',
     neckGlueAdvice: ' Glue the separate neck with its inner end flush with the cavity floor.',
     autoFit: 'Dimensions fitted automatically to the printer.', fixParams: 'Correct the inputs to download STL files.',
-    fit: 'Fits the build plate', rotate: 'Rotate 90° on the plate',
+    fit: 'Fits the build plate', rotate: 'Rotate 90° on the plate', segmented: 'Split for printing',
+    splitNote: 'Split: {x} × {y} on the plate, {z} height sections. Every segment fits the printer.',
+    segmentedParts: 'Split parts are exported as separate STL files inside ZIP archives.',
+    partsMount: 'Resonator parts plus a separate mounting set.',
+    joinerPart: 'Glue-on seam joiner', joinerNote: '24×8×2 mm; print two per XY seam and glue them to the flat outside face.',
+    zDowelNote: 'Print {count} sets of dowels for the horizontal joints and cover.',
+    seamAssembly: ' Glue and seal the segment seams; attach the joiners to the flat outside surface.',
+    generatingFiles: 'Preparing STL files…', exportFailed: 'Could not prepare the parts. Change the proportions and try again.',
     topView: 'inlet view', neckLabel: 'neck', cavityLabel: 'cavity', betweenFlats: 'across flats',
     baseSockets: 'Base with sockets', baseNeck: 'Body with neck and sockets', basePort: 'Body with port and sockets',
     neckLid: 'Cover with neck and sockets', rearLid: 'Back cover with sockets',
@@ -133,6 +169,17 @@ const ERROR_EN = {
   'Podaj dodatnie wymiary pola roboczego drukarki.': 'Enter positive printer build dimensions.',
   'Przy tej częstotliwości komora byłaby zbyt płytka lub szyjka za blisko dna. Wybierz niższą częstotliwość.': 'At this frequency the cavity would be too shallow or the neck too close to the opposite wall. Choose a lower frequency.',
   'Rezonator nie mieści się w podanym polu roboczym. Zwiększ pole robocze lub zmień częstotliwość.': 'The resonator does not fit the build volume. Use a larger printer or change the frequency.',
+  'Nieznany kształt korpusu.': 'Unknown body shape.',
+  'Zaimportuj poprawny obrys SVG.': 'Import a valid SVG outline.',
+  'Proporcje muszą być w zakresie 0,5–2,0.': 'Proportions must be between 0.5 and 2.0.',
+  'Projekt wymaga zbyt wielu części dla tego pola roboczego.': 'This build volume would require too many parts.',
+  'Pole robocze Z jest za niskie dla podziału korpusu.': 'The Z build volume is too short for body sections.',
+  'Pole robocze XY jest za małe na segmenty i łączniki.': 'The XY build plate is too small for segments and joiners.',
+  'Nie udało się dobrać komory i szyjki dla tych ustawień. Zmień proporcje lub częstotliwość.': 'Could not fit the cavity and neck to these settings. Change the proportions or frequency.',
+  'Wybrane proporcje dają zbyt płytką komorę lub zbyt mały odstęp szyjki. Zmniejsz szerokość lub głębokość.': 'These proportions make the cavity too shallow or leave too little neck clearance. Reduce the width or depth.',
+  'Pole robocze jest za małe na mocowanie ścienne.': 'The build plate is too small for the wall mount.',
+  'Pole robocze Z jest za niskie na znacznik wiercenia.': 'The Z build volume is too short for the drill marker.',
+  'Korpus jest za mały na dwa mocowania ścienne. Zwiększ szerokość lub głębokość.': 'The body is too small for two wall mounts. Increase its width or depth.',
 };
 const POSITIVE_EN = {
   'częstotliwość': 'frequency', 'średnica otworu szyjki': 'neck opening diameter', 'długość szyjki': 'neck length',
@@ -148,10 +195,14 @@ const statusText = document.querySelector('#status-text');
 const downloadButtons = {
   base: document.querySelector('#download-base'), lid: document.querySelector('#download-lid'),
   dowels: document.querySelector('#download-dowels'), neck: document.querySelector('#download-neck'),
+  joiner: document.querySelector('#download-joiner'),
+  mount: document.querySelector('#download-mount'),
 };
 let language = languageSelect.value || 'pl';
 let number = new Intl.NumberFormat(language === 'pl' ? 'pl-PL' : 'en-US', { maximumFractionDigits: 1 });
 let currentResult = null;
+let importedSvg = null;
+let svgImportError = '';
 
 const tr = key => COPY[language][key] || COPY.pl[key] || key;
 const set = (selector, value) => { document.querySelector(selector).textContent = value; };
@@ -173,7 +224,14 @@ function translateError(message) {
   }
   return ERROR_EN[message] || message;
 }
-function inputValues() { return Object.fromEntries(new FormData(form).entries()); }
+function inputValues() {
+  const values = Object.fromEntries(new FormData(form).entries());
+  if (values.shape === 'svg' && importedSvg) {
+    values.customPoints = importedSvg.points;
+    values.svgAspect = importedSvg.aspect;
+  }
+  return values;
+}
 function material(environment) {
   const name = environment === 'indoor' ? 'PETG' : 'ASA';
   set('#material-name', name);
@@ -183,18 +241,16 @@ function material(environment) {
 
 function drawing(result) {
   const n = result.input, back = n.coverPlacement === 'back', inward = n.neckDirection === 'inward';
-  const topOutline = n.shape === 'round' ? '<circle cx="64" cy="105" r="38"/>'
-    : n.shape === 'hex'
-      ? `<polygon points="${Array.from({ length: 6 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 3; return `${64 + 38 * Math.cos(a)},${105 + 38 * Math.sin(a)}`; }).join(' ')}"/>`
-      : '<rect x="28" y="76" width="72" height="58" rx="2"/>';
+  const outline = profileOutline(n);
+  const topOutline = `<polygon points="${outline.map(([x, y]) => `${64 + 76 * x / result.footprintX},${105 + 76 * y / result.footprintY}`).join(' ')}"/>`;
   const pinAngles = n.shape === 'hex' ? Array.from({ length: 6 }, (_, i) => -Math.PI / 2 + (i + 0.5) * Math.PI / 3)
     : n.shape === 'round' ? [Math.PI / 4, 3 * Math.PI / 4, 5 * Math.PI / 4, 7 * Math.PI / 4] : null;
   const topPins = pinAngles
     ? pinAngles.map(angle => `<circle cx="${64 + 31 * Math.cos(angle)}" cy="${105 + 31 * Math.sin(angle)}" r="2.5"/>`).join('')
     : [[64, 79], [96, 105], [64, 131], [32, 105]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.5"/>`).join('');
-  const widthLabel = n.shape === 'round' ? `Ø ${number.format(n.diameter)}`
-    : n.shape === 'hex' ? `${number.format(n.diameter)} ${tr('betweenFlats')}` : `${number.format(n.width)} × ${number.format(n.depth)}`;
-  const bodyWidth = n.shape === 'box' ? n.width : n.diameter;
+  const widthLabel = n.shape === 'round' && Math.abs(n.width - n.depth) < 0.01 ? `Ø ${number.format(n.width)}`
+    : `${number.format(result.footprintX)} × ${number.format(result.footprintY)}`;
+  const bodyWidth = result.footprintX;
   const sideHeight = Math.min(106, Math.max(42, result.baseHeight / bodyWidth * 154));
   const x0 = 132, x1 = 346, baseBottom = 187, baseTop = baseBottom - sideHeight;
   const wallPx = Math.max(8, Math.min(17, n.wall / bodyWidth * 428));
@@ -241,8 +297,9 @@ function render() {
   const separateNeck = back && !inward;
   const partCount = separateNeck ? 4 : 3;
   material(input.environment);
+  set('#svg-status', svgImportError ? tr(svgImportError) : importedSvg ? `${tr('svgLoaded')} ${importedSvg.name}` : tr('svgHint'));
   set('#cover-hint', tr(back ? separateNeck ? 'coverHintBackOut' : 'coverHintBackIn' : 'coverHintNeck'));
-  set('#export-subtitle', tr(partCount === 4 ? 'parts4' : 'parts3'));
+  set('#export-subtitle', tr(input.wallMount ? 'partsMount' : partCount === 4 ? 'parts4' : 'parts3'));
   set('#base-part-name', tr(back ? inward ? 'baseNeck' : 'basePort' : 'baseSockets'));
   set('#base-print-note', tr(back ? 'printBaseFront' : 'printBaseBottom'));
   set('#lid-part-name', tr(back ? 'rearLid' : 'neckLid'));
@@ -251,7 +308,12 @@ function render() {
   set('#dowel-print-note', tr('printDowels'));
   set('#neck-part-name', tr('neckPart'));
   set('#neck-print-note', tr('printNeck'));
+  set('#joiner-part-name', tr('joinerPart'));
+  set('#joiner-print-note', tr('joinerNote'));
+  set('#mount-part-name', tr('mountPart'));
+  set('#mount-print-note', tr('mountNote'));
   set('#assembly-note', tr(back ? separateNeck ? 'assemblyBackOut' : 'assemblyBackIn' : 'assemblyFront'));
+  if (input.wallMount) set('#assembly-note', document.querySelector('#assembly-note').textContent + tr('mountAssembly'));
   if (separateNeck) set('#print-advice', document.querySelector('#print-advice').textContent + tr('neckGlueAdvice'));
   document.querySelector('#neck-part').classList.toggle('hidden', !separateNeck);
   downloadButtons.neck.classList.toggle('hidden', !separateNeck);
@@ -259,7 +321,12 @@ function render() {
 
   const result = autoDesign(input);
   currentResult = result.errors.length ? null : result;
-  for (const [part, button] of Object.entries(downloadButtons)) button.disabled = !currentResult || (part === 'neck' && !separateNeck);
+  const segmentedXY = !!currentResult && (result.splitX > 1 || result.splitY > 1);
+  document.querySelector('#joiner-part').classList.toggle('hidden', !segmentedXY);
+  downloadButtons.joiner.classList.toggle('hidden', !segmentedXY);
+  document.querySelector('#mount-part').classList.toggle('hidden', !input.wallMount);
+  downloadButtons.mount.classList.toggle('hidden', !input.wallMount);
+  for (const [part, button] of Object.entries(downloadButtons)) button.disabled = !currentResult || (part === 'neck' && !separateNeck) || (part === 'joiner' && !segmentedXY) || (part === 'mount' && !input.wallMount);
   errorBox.classList.toggle('hidden', !result.errors.length);
   resultContent.classList.toggle('hidden', !!result.errors.length);
   if (result.errors.length) {
@@ -271,13 +338,17 @@ function render() {
   errorBox.innerHTML = '';
   statusText.textContent = tr('autoFit');
   set('#volume', fmt(result.volume / 1e6, 'L'));
-  set('#fit-badge', tr(result.orientation === 'standard' ? 'fit' : 'rotate'));
+  const segmented = segmentedXY || result.splitZ > 1;
+  set('#fit-badge', tr(segmented ? 'segmented' : result.orientation === 'standard' ? 'fit' : 'rotate'));
+  set('#split-note', segmented ? tr('splitNote').replace('{x}', result.splitX).replace('{y}', result.splitY).replace('{z}', result.splitZ) : '');
+  if (segmented) set('#export-subtitle', tr('segmentedParts'));
+  set('#download-base span[data-i18n]', tr(segmented ? 'downloadBaseZip' : 'downloadBase'));
+  set('#download-lid span[data-i18n]', tr(segmentedXY ? 'downloadLidZip' : 'downloadLid'));
+  if (segmentedXY) set('#assembly-note', document.querySelector('#assembly-note').textContent + tr('seamAssembly'));
   document.querySelector('#drawing').innerHTML = drawing(result);
   const n = result.input;
-  const outer = n.shape === 'round' ? `Ø ${fmt(n.diameter)}`
-    : n.shape === 'hex' ? `${fmt(n.diameter)} ${tr('betweenFlats')}` : `${fmt(n.width)} × ${fmt(n.depth)}`;
-  const inner = n.shape === 'round' ? `Ø ${fmt(result.innerWidth)}`
-    : n.shape === 'hex' ? `${fmt(result.innerWidth)} ${tr('betweenFlats')}` : `${fmt(result.innerWidth)} × ${fmt(result.innerDepth)}`;
+  const outer = n.shape === 'round' && Math.abs(n.width - n.depth) < 0.01 ? `Ø ${fmt(n.width)}` : `${fmt(result.footprintX)} × ${fmt(result.footprintY)}`;
+  const inner = n.shape === 'round' && Math.abs(result.innerWidth - result.innerDepth) < 0.01 ? `Ø ${fmt(result.innerWidth)}` : `${fmt(result.innerWidth)} × ${fmt(result.innerDepth)}`;
   document.querySelector('#stats').innerHTML = [
     stat(tr('statOuter'), outer), stat(tr('statInner'), inner),
     stat(tr('statCavityHeight'), fmt(result.cavityHeight)), stat(tr('statBaseHeight'), fmt(result.baseHeight)),
@@ -291,26 +362,59 @@ function render() {
     stat(tr('statSockets'), `Ø ${fmt(result.socketDiameter)} × ${fmt(result.socketDepth)}`),
     stat(tr('statPinClearance'), fmt(n.pinClearance)),
   ].join('');
-  set('#dowel-print-note', `${tr('printDowels')} · Ø ${number.format(result.dowelDiameter)} × ${number.format(result.dowelLength)} mm`);
+  set('#dowel-print-note', result.splitZ > 1 ? tr('zDowelNote').replace('{count}', result.splitZ)
+    : `${tr('printDowels')} · Ø ${number.format(result.dowelDiameter)} × ${number.format(result.dowelLength)} mm`);
 }
 
-function download(part) {
+async function download(part) {
   if (!currentResult) return;
-  const makers = { base: makeBase, lid: makeLid, dowels: makeDowels, neck: makeNeck };
-  if (part === 'neck' && !(currentResult.input.coverPlacement === 'back' && currentResult.input.neckDirection === 'outward')) return;
-  const filename = `helmholtz_${Math.round(currentResult.input.frequency)}Hz_${currentResult.input.coverPlacement}_${currentResult.input.neckDirection}_${part}.stl`;
-  const url = URL.createObjectURL(binaryStl(makers[part](currentResult), filename));
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.append(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 30000);
+  const result = currentResult, button = downloadButtons[part];
+  button.disabled = true;
+  statusText.textContent = tr('generatingFiles');
+  try {
+    const parts = modelParts(result, part);
+    if (!parts.length) return;
+    const multiple = parts.length > 1;
+    const filename = multiple ? `helmholtz_${Math.round(result.input.frequency)}Hz_${part}_segments.zip` : parts[0].name;
+    const blob = multiple ? await zipStls(parts) : binaryStl(parts[0].mesh, filename);
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    if (result === currentResult) statusText.textContent = tr('autoFit');
+  } catch (error) {
+    console.error(error);
+    if (result === currentResult) statusText.textContent = tr('exportFailed');
+  } finally {
+    if (result === currentResult) button.disabled = false;
+  }
 }
 
 form.addEventListener('input', render);
-form.addEventListener('change', render);
+form.addEventListener('change', event => {
+  if (event.target.name === 'shape' && event.target.value === 'svg') document.querySelector('.advanced').open = true;
+  render();
+});
+document.querySelector('#svg-file').addEventListener('change', async event => {
+  const file = event.target.files[0];
+  importedSvg = null;
+  svgImportError = '';
+  if (file) {
+    try {
+      if (file.size > 1000000) throw new Error('invalidSvg');
+      importedSvg = { ...importSvgOutline(await file.text()), name: file.name };
+      form.querySelector('input[name="shape"][value="svg"]').checked = true;
+      document.querySelector('.advanced').open = true;
+    } catch (error) {
+      svgImportError = error.message === 'concaveSvg' ? 'svgConcave' : error.message === 'openSvg' ? 'svgOpen' : 'svgInvalid';
+    }
+  }
+  render();
+});
 languageSelect.addEventListener('change', () => {
   language = languageSelect.value;
   number = new Intl.NumberFormat(language === 'pl' ? 'pl-PL' : 'en-US', { maximumFractionDigits: 1 });

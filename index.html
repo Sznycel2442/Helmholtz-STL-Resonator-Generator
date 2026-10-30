@@ -32,10 +32,14 @@
 
         <section class="form-section shape-section">
           <h3 data-i18n="shapeTitle">Kształt korpusu</h3>
-          <div class="shape-switch" role="group" aria-label="Kształt korpusu" data-i18n-aria="shapeTitle">
+          <div class="shape-switch shapes-grid" role="group" aria-label="Kształt korpusu" data-i18n-aria="shapeTitle">
             <label><input type="radio" name="shape" value="round" checked><span><i class="shape-icon round-icon"></i><b data-i18n="shapeRound">Okrągły</b></span></label>
             <label><input type="radio" name="shape" value="box"><span><i class="shape-icon box-icon"></i><b data-i18n="shapeBox">Prostokątny</b></span></label>
             <label><input type="radio" name="shape" value="hex"><span><i class="shape-icon hex-icon"></i><b data-i18n="shapeHex">Heksagonalny</b></span></label>
+            <label><input type="radio" name="shape" value="ellipse"><span><i class="shape-icon ellipse-icon"></i><b data-i18n="shapeEllipse">Eliptyczny</b></span></label>
+            <label><input type="radio" name="shape" value="octagon"><span><i class="shape-icon octagon-icon"></i><b data-i18n="shapeOctagon">Ośmiokątny</b></span></label>
+            <label><input type="radio" name="shape" value="rounded"><span><i class="shape-icon rounded-icon"></i><b data-i18n="shapeRounded">Zaokrąglony</b></span></label>
+            <label><input type="radio" name="shape" value="svg"><span><i class="shape-icon svg-icon">SVG</i><b data-i18n="shapeSvg">Z pliku SVG</b></span></label>
           </div>
         </section>
 
@@ -59,6 +63,16 @@
         <details class="advanced">
           <summary><b data-i18n="settingsSummary">Drukarka i warunki pracy</b><span>⌄</span></summary>
           <div class="advanced-content">
+            <h3 data-i18n="proportionsTitle">Proporcje korpusu</h3>
+            <div class="field-grid three">
+              <label class="field"><span><b data-i18n="widthFactorLabel">Szerokość</b><em>×</em></span><input name="widthFactor" type="number" min="0.5" max="2" step="0.1" value="1"></label>
+              <label class="field"><span><b data-i18n="depthFactorLabel">Głębokość</b><em>×</em></span><input name="depthFactor" type="number" min="0.5" max="2" step="0.1" value="1"></label>
+              <label class="field"><span><b data-i18n="heightFactorLabel">Wysokość</b><em>×</em></span><input name="heightFactor" type="number" min="0.5" max="2" step="0.1" value="1"></label>
+            </div>
+            <p class="hint" data-i18n="proportionsHint">Wysokość 0,5× daje płytszy korpus, 2× wyższy. Objętość komory pozostaje zgodna z częstotliwością.</p>
+            <h3 class="spaced-title" data-i18n="svgTitle">Własny obrys SVG</h3>
+            <label class="field"><span data-i18n="svgLabel">Jeden zamknięty, wypukły obrys</span><input id="svg-file" type="file" accept=".svg,image/svg+xml"></label>
+            <p id="svg-status" class="hint" data-i18n="svgHint">Wybierz kształt „Z pliku SVG”, a następnie wczytaj plik.</p>
             <h3 data-i18n="printerVolumeTitle">Pole robocze drukarki</h3>
             <div class="field-grid three">
               <label class="field"><span>X <em>mm</em></span><input name="bedX" type="number" min="1" step="1" value="256" required></label>
@@ -67,6 +81,9 @@
             </div>
             <h3 class="spaced-title" data-i18n="dowelFitTitle">Spasowanie kołków</h3>
             <label class="field"><span><b data-i18n="dowelClearanceLabel">Luz na stronę</b><em>mm</em></span><input name="pinClearance" type="number" min="0.1" max="0.4" step="0.05" value="0.25" required></label>
+            <h3 class="spaced-title" data-i18n="wallMountTitle">Mocowanie do ściany</h3>
+            <label class="mount-toggle"><input name="wallMount" type="checkbox"><span data-i18n="wallMountLabel">Dodaj mocowania typu keyhole i kołki do oznaczenia wiercenia</span></label>
+            <p class="hint" data-i18n="wallMountHint">Dwie płytki i cztery dystanse do przyklejenia na tylnej ściance; dwa kołki do oznaczenia otworów. Po sklejeniu sprawdź nośność.</p>
             <h3 class="spaced-title" data-i18n="conditionsTitle">Warunki pracy</h3>
             <label class="field"><span data-i18n="environmentLabel">Materiał do warunków</span><select name="environment"><option value="indoor" data-i18n="indoor">Wewnątrz</option><option value="warm" data-i18n="warm">Wyższa temperatura</option><option value="outdoor" data-i18n="outdoor">Na zewnątrz / w słońcu</option></select></label>
             <label class="field spaced"><span><b data-i18n="temperatureLabel">Temperatura powietrza</b><em>°C</em></span><input name="temperature" type="number" min="-20" max="50" step="1" value="20" required></label>
@@ -82,6 +99,7 @@
             <div class="hero-result"><div><span data-i18n="cavityVolume">Objętość komory</span><strong id="volume">—</strong></div><span id="fit-badge" class="fit-badge">—</span></div>
             <div class="drawing" id="drawing" role="img" aria-label="Schemat rezonatora"></div>
             <div class="stats" id="stats"></div>
+            <p id="split-note" class="assembly-note"></p>
           </div>
         </section>
 
@@ -92,12 +110,16 @@
             <div><span class="part-icon">◉</span><div><strong id="lid-part-name"></strong><small id="lid-print-note"></small></div></div>
             <div><span class="part-icon">●</span><div><strong id="dowel-part-name"></strong><small id="dowel-print-note"></small></div></div>
             <div id="neck-part" class="hidden"><span class="part-icon">◌</span><div><strong id="neck-part-name"></strong><small id="neck-print-note"></small></div></div>
+            <div id="joiner-part" class="hidden"><span class="part-icon">▰</span><div><strong id="joiner-part-name"></strong><small id="joiner-print-note"></small></div></div>
+            <div id="mount-part" class="hidden"><span class="part-icon">⌂</span><div><strong id="mount-part-name"></strong><small id="mount-print-note"></small></div></div>
           </div>
           <div class="export-actions">
             <button type="button" id="download-base"><span data-i18n="downloadBase">Pobierz bazę STL</span><span>↓</span></button>
             <button type="button" id="download-lid"><span data-i18n="downloadLid">Pobierz pokrywę STL</span><span>↓</span></button>
             <button type="button" id="download-dowels"><span data-i18n="downloadDowels">Pobierz kołki STL</span><span>↓</span></button>
             <button type="button" id="download-neck" class="hidden"><span data-i18n="downloadNeck">Pobierz szyjkę STL</span><span>↓</span></button>
+            <button type="button" id="download-joiner" class="hidden"><span data-i18n="downloadJoiner">Pobierz łącznik STL</span><span>↓</span></button>
+            <button type="button" id="download-mount" class="hidden"><span data-i18n="downloadMount">Pobierz mocowania ZIP</span><span>↓</span></button>
           </div>
           <p class="assembly-note" id="assembly-note"></p>
         </section>
@@ -123,7 +145,13 @@
       </div>
     </main>
   </div>
+  <script src="profiles.js" defer></script>
   <script src="geometry.js" defer></script>
+  <script src="split.js" defer></script>
+  <script src="parts.js" defer></script>
+  <script src="zip.js" defer></script>
+  <script src="svg.js" defer></script>
+  <script src="mount.js" defer></script>
   <script src="app.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
