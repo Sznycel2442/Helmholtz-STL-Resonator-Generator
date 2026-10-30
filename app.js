@@ -2,22 +2,24 @@ const COPY = {
   pl: {
     eyebrow: 'PROJEKTOWANIE DO DRUKU 3D', title: 'Rezonator Helmholtza',
     lead: 'Podaj częstotliwość. Generator dobierze wymiary i przygotuje modele STL.',
-    designTitle: 'Zaprojektuj', designSubtitle: 'Wybierz częstotliwość i układ.',
-    frequencyLabel: 'Częstotliwość docelowa', frequencyHint: 'Wymiary komory i szyjki dobierają się automatycznie.',
+    designTitle: 'Zaprojektuj', designSubtitle: 'Kształt i parametry rezonatora.',
+    parametersTitle: 'Parametry rezonatora', frequencyLabel: 'Częstotliwość',
+    widthLabel: 'Szerokość korpusu', depthLabel: 'Głębokość korpusu', heightLabel: 'Wysokość komory',
+    neckDiameterLabel: 'Średnica szyjki', neckLengthLabel: 'Długość szyjki',
+    lockHint: 'Zablokuj przed automatyczną zmianą', unlockHint: 'Odblokuj automatyczną zmianę',
     shapeTitle: 'Kształt korpusu', shapeRound: 'Okrągły', shapeBox: 'Prostokątny', shapeHex: 'Heksagonalny',
     shapeEllipse: 'Eliptyczny', shapeOctagon: 'Ośmiokątny', shapeRounded: 'Zaokrąglony', shapeSvg: 'Z pliku SVG',
-    proportionsTitle: 'Proporcje korpusu', widthFactorLabel: 'Szerokość', depthFactorLabel: 'Głębokość', heightFactorLabel: 'Wysokość',
-    proportionsHint: 'Wysokość 0,5× daje płytszy korpus, 2× wyższy. Objętość komory pozostaje zgodna z częstotliwością.',
+    designAdvancedTitle: 'Obrys SVG i temperatura',
     svgTitle: 'Własny obrys SVG', svgLabel: 'Jeden zamknięty, wypukły obrys', svgHint: 'Wybierz kształt „Z pliku SVG”, a następnie wczytaj plik.',
     svgLoaded: 'Wczytano obrys:', svgInvalid: 'Nie udało się wczytać SVG. Użyj jednego zamkniętego obrysu bez transformacji.',
     svgConcave: 'Obrys musi być wypukły i nie może mieć otworów.', svgOpen: 'Ścieżka SVG musi być zamknięta.',
     wallMountTitle: 'Mocowanie do ściany', wallMountLabel: 'Dodaj mocowania typu keyhole i kołki do oznaczenia wiercenia',
     wallMountHint: 'Dwie płytki i cztery dystanse do przyklejenia na tylnej ściance; dwa kołki do oznaczenia otworów. Po sklejeniu sprawdź nośność.',
     mountPart: 'Mocowania i znaczniki wiercenia', mountNote: '2 płytki 30×50×3 mm, 4 dystanse 6×40×4 mm, 2 znaczniki. Łeb śruby ≤8 mm, trzpień ≤4 mm.',
-    downloadMount: 'Pobierz mocowania ZIP', mountAssembly: ' Dystanse i płytki przyklej symetrycznie do płaskiej tylnej strony, wąską szczeliną ku górze. Znaczniki włóż przez duże otwory, przesuń do końca szczelin i dociśnij do ściany, aby zaznaczyć punkty wiercenia.',
+    downloadMount: 'Pobierz mocowania ZIP',
     neckDirectionTitle: 'Kierunek szyjki', outward: 'Na zewnątrz', inward: 'Do środka',
     coverPlacementTitle: 'Miejsce pokrywy', coverNeck: 'Przy szyjce', coverBack: 'Tylna ścianka',
-    settingsSummary: 'Drukarka i warunki pracy', printerVolumeTitle: 'Pole robocze drukarki',
+    printerVolumeTitle: 'Pole robocze drukarki',
     dowelFitTitle: 'Spasowanie kołków', dowelClearanceLabel: 'Luz na stronę',
     conditionsTitle: 'Warunki pracy', environmentLabel: 'Materiał do warunków',
     indoor: 'Wewnątrz', warm: 'Wyższa temperatura', outdoor: 'Na zewnątrz / w słońcu',
@@ -25,7 +27,7 @@ const COPY = {
     filesTitle: 'Pliki do druku', downloadBase: 'Pobierz bazę STL', downloadLid: 'Pobierz pokrywę STL',
     downloadDowels: 'Pobierz kołki STL', downloadNeck: 'Pobierz szyjkę STL', downloadJoiner: 'Pobierz łącznik STL', materialTitle: 'ZALECANY MATERIAŁ',
     downloadBaseZip: 'Pobierz segmenty bazy ZIP', downloadLidZip: 'Pobierz segmenty pokrywy ZIP',
-    printTitle: 'Ustawienia druku', printSubtitle: 'Punkt wyjścia dla dyszy 0,4 mm',
+    printTitle: 'Ustawienia druku', printSubtitle: 'Drukarka, materiał i parametry',
     layerLabel: 'Warstwa', layerValue: '0,20 mm', wallsLabel: 'Obrysy', infillLabel: 'Wypełnienie',
     infillValue: '30% gyroid', solidLabel: 'Pełne warstwy góra/dół',
     dowelInfillLabel: 'Kołki', dowelInfillValue: '100% wypełnienia', supportsLabel: 'Podpory', supportsValue: 'Wyłączone',
@@ -33,23 +35,19 @@ const COPY = {
     sourceAirtight: 'Szczelność wydruków', sourceLayers: 'Warstwy i obrysy',
     methodNote: 'Obliczenia korzystają z przybliżonego modelu Helmholtza. Gotowy wydruk warto zmierzyć po uszczelnieniu połączeń.',
     sourceFormula: 'Podstawa wzoru', sourceMaterials: 'Materiały',
-    coverHintNeck: 'Szyjka jest częścią zdejmowanej pokrywy.',
-    coverHintBackIn: 'Tylna pokrywa jest płaska; szyjka wchodzi do komory od przodu.',
-    coverHintBackOut: 'Szyjka jest osobnym elementem wklejanym w przednią ściankę, aby uniknąć podpór.',
     materialPETG: 'Dobry wybór do użytku wewnątrz. Stosuj kilka obrysów i szczelnie sklej połączenia.',
     materialASAWarm: 'Lepszy przy wyższej temperaturze. Duże części drukuj w zamkniętej komorze.',
     materialASAOutdoor: 'Odporny na słońce i wyższą temperaturę. Duże części drukuj w zamkniętej komorze.',
     printAdvicePETG: 'Sprawdź w podglądzie slicera pełne warstwy dna i pokrywy. Po montażu uszczelnij styk części oraz szyjkę.',
     printAdviceASA: 'Drukuj w zamkniętej komorze; przy dużej podstawie dodaj brim 5–8 mm. Po montażu uszczelnij wszystkie styki.',
     neckGlueAdvice: ' Osobną szyjkę wklej tak, aby jej wewnętrzny koniec był na równo z dnem komory.',
-    autoFit: 'Wymiary dobrane automatycznie do drukarki.', fixParams: 'Popraw parametry, aby pobrać STL.',
+    autoFit: 'Projekt obliczony.', fixParams: 'Popraw parametry, aby pobrać STL.',
     fit: 'Mieści się na stole', rotate: 'Obróć o 90° na stole', segmented: 'Podzielony do druku',
     splitNote: 'Podział: {x} × {y} na stole, {z} sekcji wysokości. Każdy segment mieści się na drukarce.',
     segmentedParts: 'Podzielone części są eksportowane jako osobne STL w archiwach ZIP.',
     partsMount: 'Części rezonatora i dodatkowy zestaw mocowań.',
     joinerPart: 'Łącznik klejony', joinerNote: '24×8×2 mm; drukuj po dwa na styk segmentów XY i przyklej na płaskiej zewnętrznej stronie.',
     zDowelNote: 'Drukuj {count} zestawów kołków dla połączeń poziomych i pokrywy.',
-    seamAssembly: ' Styki segmentów sklej i uszczelnij; łączniki przyklej na zewnętrznej płaskiej stronie.',
     generatingFiles: 'Przygotowuję pliki STL…', exportFailed: 'Nie udało się przygotować części. Zmień proporcje i spróbuj ponownie.',
     topView: 'widok od wlotu', neckLabel: 'szyjka', cavityLabel: 'komora', betweenFlats: 'między bokami',
     baseSockets: 'Baza z gniazdami', baseNeck: 'Korpus z szyjką i gniazdami', basePort: 'Korpus z otworem i gniazdami',
@@ -60,12 +58,9 @@ const COPY = {
     printRearLid: 'Druk stroną zewnętrzną na stole', printDowels: 'Druk pionowo',
     printNeck: 'Druk pionowo; wklej na równo z dnem komory',
     parts3: 'Trzy osobne wydruki, bez podpór w komorze.', parts4: 'Cztery osobne wydruki, bez podpór w komorze.',
-    assemblyFront: 'Wsuń kołki w gniazda bazy, załóż pokrywę i szczelnie sklej płaski styk.',
-    assemblyBackIn: 'Wsuń kołki w korpus, załóż tylną pokrywę i szczelnie sklej płaski styk.',
-    assemblyBackOut: 'Wklej szyjkę w przednią ściankę na równo z dnem komory. Następnie załóż tylną pokrywę na kołki i uszczelnij oba połączenia.',
     statOuter: 'Korpus zewnętrzny', statInner: 'Komora w przekroju', statCavityHeight: 'Wysokość komory',
     statBaseHeight: 'Wysokość korpusu', statLidHeight: 'Wysokość pokrywy w druku',
-    statNeckHole: 'Otwór szyjki', statNeckLength: 'Długość szyjki', statDirection: 'Kierunek szyjki',
+    statNeckHole: 'Otwór szyjki', statNeckArea: 'Przekrój szyjki', statNeckLength: 'Długość szyjki', statDirection: 'Kierunek szyjki',
     statCover: 'Miejsce pokrywy', statTipClearance: 'Odstęp szyjki od przeciwnej ścianki',
     statDisplaced: 'Objętość zajęta przez szyjkę', statDowels: 'Kołki osobno',
     statSockets: 'Gniazda w obu częściach', statPinClearance: 'Luz kołka na stronę',
@@ -74,22 +69,24 @@ const COPY = {
   en: {
     eyebrow: 'DESIGNED FOR 3D PRINTING', title: 'Helmholtz Resonator',
     lead: 'Enter a target frequency. The generator calculates the dimensions and prepares STL models.',
-    designTitle: 'Design', designSubtitle: 'Choose a frequency and layout.',
-    frequencyLabel: 'Target frequency', frequencyHint: 'Cavity and neck dimensions are selected automatically.',
+    designTitle: 'Design', designSubtitle: 'Resonator shape and parameters.',
+    parametersTitle: 'Resonator parameters', frequencyLabel: 'Frequency',
+    widthLabel: 'Body width', depthLabel: 'Body depth', heightLabel: 'Cavity height',
+    neckDiameterLabel: 'Neck diameter', neckLengthLabel: 'Neck length',
+    lockHint: 'Lock against automatic changes', unlockHint: 'Allow automatic changes',
     shapeTitle: 'Body shape', shapeRound: 'Round', shapeBox: 'Rectangular', shapeHex: 'Hexagonal',
     shapeEllipse: 'Elliptical', shapeOctagon: 'Octagonal', shapeRounded: 'Rounded', shapeSvg: 'From SVG file',
-    proportionsTitle: 'Body proportions', widthFactorLabel: 'Width', depthFactorLabel: 'Depth', heightFactorLabel: 'Height',
-    proportionsHint: 'Height 0.5× makes a shallower body; 2× makes it taller. Cavity volume stays matched to the frequency.',
+    designAdvancedTitle: 'SVG outline and temperature',
     svgTitle: 'Custom SVG outline', svgLabel: 'One closed, convex outline', svgHint: 'Select “From SVG file”, then load an SVG.',
     svgLoaded: 'Loaded outline:', svgInvalid: 'Could not read the SVG. Use one closed outline without transforms.',
     svgConcave: 'The outline must be convex and contain no holes.', svgOpen: 'The SVG path must be closed.',
     wallMountTitle: 'Wall mounting', wallMountLabel: 'Add keyhole mounts and drill marking pins',
     wallMountHint: 'Glue two plates and four spacers to the flat back; use two pointed pins to mark the drill positions. Check the bond before hanging.',
     mountPart: 'Mounts and drill markers', mountNote: '2 plates 30×50×3 mm, 4 spacers 6×40×4 mm, 2 markers. Screw head ≤8 mm, shank ≤4 mm.',
-    downloadMount: 'Download mounts ZIP', mountAssembly: ' Glue the spacers and plates symmetrically to the flat back, with the narrow slots pointing up. Insert the markers through the large openings, slide them to the ends of the narrow slots, and press against the wall to mark the drill points.',
+    downloadMount: 'Download mounts ZIP',
     neckDirectionTitle: 'Neck direction', outward: 'Outward', inward: 'Into cavity',
     coverPlacementTitle: 'Cover location', coverNeck: 'Neck side', coverBack: 'Back wall',
-    settingsSummary: 'Printer and conditions', printerVolumeTitle: 'Printer build volume',
+    printerVolumeTitle: 'Printer build volume',
     dowelFitTitle: 'Dowel fit', dowelClearanceLabel: 'Clearance per side',
     conditionsTitle: 'Operating conditions', environmentLabel: 'Material for the conditions',
     indoor: 'Indoors', warm: 'Higher temperature', outdoor: 'Outdoors / sunlight',
@@ -97,7 +94,7 @@ const COPY = {
     filesTitle: 'Print files', downloadBase: 'Download base STL', downloadLid: 'Download cover STL',
     downloadDowels: 'Download dowels STL', downloadNeck: 'Download neck STL', downloadJoiner: 'Download joiner STL', materialTitle: 'RECOMMENDED MATERIAL',
     downloadBaseZip: 'Download base segments ZIP', downloadLidZip: 'Download cover segments ZIP',
-    printTitle: 'Print settings', printSubtitle: 'Starting point for a 0.4 mm nozzle',
+    printTitle: 'Print settings', printSubtitle: 'Printer, material, and parameters',
     layerLabel: 'Layer height', layerValue: '0.20 mm', wallsLabel: 'Perimeters', infillLabel: 'Infill',
     infillValue: '30% gyroid', solidLabel: 'Top / bottom solid layers',
     dowelInfillLabel: 'Dowels', dowelInfillValue: '100% infill', supportsLabel: 'Supports', supportsValue: 'Off',
@@ -105,23 +102,19 @@ const COPY = {
     sourceAirtight: 'Watertight prints', sourceLayers: 'Layers and perimeters',
     methodNote: 'The design uses an approximate Helmholtz model. Measure the printed resonator after sealing the joints.',
     sourceFormula: 'Acoustic model', sourceMaterials: 'Materials',
-    coverHintNeck: 'The neck is part of the removable cover.',
-    coverHintBackIn: 'The back cover is flat; the neck extends into the cavity from the front.',
-    coverHintBackOut: 'The neck is a separate insert glued into the front wall, avoiding internal supports.',
     materialPETG: 'A practical choice indoors. Use several perimeters and seal the joints carefully.',
     materialASAWarm: 'Better for higher temperatures. Print large parts in an enclosure.',
     materialASAOutdoor: 'Resists sunlight and higher temperatures. Print large parts in an enclosure.',
     printAdvicePETG: 'Check the solid bottom and cover layers in the slicer preview. Seal the body joint and neck after assembly.',
     printAdviceASA: 'Print in an enclosure; add a 5–8 mm brim for a large footprint. Seal every joint after assembly.',
     neckGlueAdvice: ' Glue the separate neck with its inner end flush with the cavity floor.',
-    autoFit: 'Dimensions fitted automatically to the printer.', fixParams: 'Correct the inputs to download STL files.',
+    autoFit: 'Design calculated.', fixParams: 'Correct the inputs to download STL files.',
     fit: 'Fits the build plate', rotate: 'Rotate 90° on the plate', segmented: 'Split for printing',
     splitNote: 'Split: {x} × {y} on the plate, {z} height sections. Every segment fits the printer.',
     segmentedParts: 'Split parts are exported as separate STL files inside ZIP archives.',
     partsMount: 'Resonator parts plus a separate mounting set.',
     joinerPart: 'Glue-on seam joiner', joinerNote: '24×8×2 mm; print two per XY seam and glue them to the flat outside face.',
     zDowelNote: 'Print {count} sets of dowels for the horizontal joints and cover.',
-    seamAssembly: ' Glue and seal the segment seams; attach the joiners to the flat outside surface.',
     generatingFiles: 'Preparing STL files…', exportFailed: 'Could not prepare the parts. Change the proportions and try again.',
     topView: 'inlet view', neckLabel: 'neck', cavityLabel: 'cavity', betweenFlats: 'across flats',
     baseSockets: 'Base with sockets', baseNeck: 'Body with neck and sockets', basePort: 'Body with port and sockets',
@@ -132,12 +125,9 @@ const COPY = {
     printRearLid: 'Print with the outer side on the bed', printDowels: 'Print upright',
     printNeck: 'Print upright; glue flush with the cavity floor',
     parts3: 'Three separate prints, no supports inside the cavity.', parts4: 'Four separate prints, no supports inside the cavity.',
-    assemblyFront: 'Insert the dowels into the base, place the cover, and seal the flat joint.',
-    assemblyBackIn: 'Insert the dowels into the body, place the back cover, and seal the flat joint.',
-    assemblyBackOut: 'Glue the neck into the front wall, flush with the cavity floor. Fit the back cover on the dowels and seal both joints.',
     statOuter: 'Outer body', statInner: 'Cavity cross section', statCavityHeight: 'Cavity height',
     statBaseHeight: 'Body print height', statLidHeight: 'Cover print height',
-    statNeckHole: 'Neck opening', statNeckLength: 'Neck length', statDirection: 'Neck direction',
+    statNeckHole: 'Neck opening', statNeckArea: 'Neck cross section', statNeckLength: 'Neck length', statDirection: 'Neck direction',
     statCover: 'Cover location', statTipClearance: 'Neck tip clearance',
     statDisplaced: 'Volume displaced by neck', statDowels: 'Separate dowels',
     statSockets: 'Sockets in both parts', statPinClearance: 'Dowel clearance per side',
@@ -180,6 +170,9 @@ const ERROR_EN = {
   'Pole robocze jest za małe na mocowanie ścienne.': 'The build plate is too small for the wall mount.',
   'Pole robocze Z jest za niskie na znacznik wiercenia.': 'The Z build volume is too short for the drill marker.',
   'Korpus jest za mały na dwa mocowania ścienne. Zwiększ szerokość lub głębokość.': 'The body is too small for two wall mounts. Increase its width or depth.',
+  'Wybrane wymiary nie tworzą poprawnej komory.': 'These dimensions do not form a valid cavity.',
+  'Nie da się zachować częstotliwości przy tych blokadach i zakresach suwaków.': 'The frequency cannot be preserved with these locks and slider limits.',
+  'Okrąg wymaga jednakowej szerokości i głębokości; obie wartości są zablokowane.': 'A round body needs equal width and depth; both values are locked.',
 };
 const POSITIVE_EN = {
   'częstotliwość': 'frequency', 'średnica otworu szyjki': 'neck opening diameter', 'długość szyjki': 'neck length',
@@ -188,6 +181,7 @@ const POSITIVE_EN = {
 };
 
 const form = document.querySelector('#config');
+const printPanel = document.querySelector('.print-panel');
 const languageSelect = document.querySelector('#language');
 const errorBox = document.querySelector('#error-box');
 const resultContent = document.querySelector('#result-content');
@@ -203,6 +197,10 @@ let number = new Intl.NumberFormat(language === 'pl' ? 'pl-PL' : 'en-US', { maxi
 let currentResult = null;
 let importedSvg = null;
 let svgImportError = '';
+let designValues = null;
+const designLocks = { frequency: true, width: false, depth: false, cavityHeight: false, neckDiameter: true, neckLength: true };
+let solverMessage = '';
+let solverBlocked = false;
 
 const tr = key => COPY[language][key] || COPY.pl[key] || key;
 const set = (selector, value) => { document.querySelector(selector).textContent = value; };
@@ -215,6 +213,7 @@ function applyLanguage() {
   document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = tr(element.dataset.i18n); });
   document.querySelectorAll('[data-i18n-aria]').forEach(element => { element.setAttribute('aria-label', tr(element.dataset.i18nAria)); });
   document.querySelector('#drawing').setAttribute('aria-label', tr('title'));
+  if (designValues) syncDesignControls();
 }
 function translateError(message) {
   if (language === 'pl') return message;
@@ -226,11 +225,91 @@ function translateError(message) {
 }
 function inputValues() {
   const values = Object.fromEntries(new FormData(form).entries());
+  if (designValues) Object.assign(values, designValues);
   if (values.shape === 'svg' && importedSvg) {
     values.customPoints = importedSvg.points;
     values.svgAspect = importedSvg.aspect;
   }
   return values;
+}
+
+function syncDesignControls() {
+  for (const key of DESIGN_VARIABLES) {
+    const value = designValues[key];
+    document.querySelector(`[data-design="${key}"]`).value = value;
+    document.querySelector(`[data-design-number="${key}"]`).value = Math.round(value * 10) / 10;
+    const button = document.querySelector(`[data-lock="${key}"]`);
+    button.textContent = designLocks[key] ? '🔒' : '🔓';
+    button.setAttribute('aria-pressed', String(designLocks[key]));
+    button.setAttribute('aria-label', `${tr(designLocks[key] ? 'unlockHint' : 'lockHint')}: ${tr({
+      frequency: 'frequencyLabel', width: 'widthLabel', depth: 'depthLabel', cavityHeight: 'heightLabel',
+      neckDiameter: 'neckDiameterLabel', neckLength: 'neckLengthLabel',
+    }[key])}`);
+  }
+}
+
+function initializeDesign() {
+  const initialFrequency = Number(document.querySelector('[data-design="frequency"]').value);
+  const seed = autoDesign({ ...inputValues(), frequency: initialFrequency });
+  designValues = seed.errors.length ? {
+    frequency: initialFrequency, width: 145, depth: 145, cavityHeight: 109, neckDiameter: 20, neckLength: 30,
+  } : {
+    frequency: initialFrequency, width: seed.input.width, depth: seed.input.depth,
+    cavityHeight: seed.cavityHeight, neckDiameter: seed.input.neckDiameter, neckLength: seed.input.neckLength,
+  };
+  if (seed.errors.length) { solverMessage = seed.errors[0]; solverBlocked = true; }
+  syncDesignControls();
+}
+
+function updateDesignValue(key, value) {
+  const numeric = Number(value), [minimum, maximum] = DESIGN_LIMITS[key];
+  if (!Number.isFinite(numeric) || numeric < minimum || numeric > maximum) {
+    solverMessage = 'Wartość suwaka jest poza dozwolonym zakresem.';
+    syncDesignControls();
+    render();
+    return;
+  }
+  const previous = { ...designValues };
+  const shapeInput = form.querySelector('input[name="shape"]:checked');
+  const previousShape = shapeInput.value;
+  if (previousShape === 'round' && ['width', 'depth'].includes(key) &&
+      Math.abs(numeric - designValues[key === 'width' ? 'depth' : 'width']) > 0.01) {
+    form.querySelector('input[name="shape"][value="ellipse"]').checked = true;
+  }
+  const candidate = { ...designValues, [key]: numeric };
+  const solution = solveDesign(inputValues(), candidate, designLocks, key);
+  if (solution.values) {
+    designValues = solution.values;
+    solverMessage = '';
+    solverBlocked = false;
+  } else {
+    designValues = previous;
+    form.querySelector(`input[name="shape"][value="${previousShape}"]`).checked = true;
+    solverMessage = solution.error;
+  }
+  syncDesignControls();
+  render();
+}
+
+function resolveLayoutChange() {
+  const layout = inputValues();
+  if (layout.shape === 'svg' && !importedSvg) {
+    solverBlocked = true;
+    solverMessage = 'Zaimportuj poprawny obrys SVG.';
+    render();
+    return;
+  }
+  const solution = solveDesign(layout, designValues, designLocks, null);
+  if (solution.values) {
+    designValues = solution.values;
+    solverMessage = '';
+    solverBlocked = false;
+  } else {
+    solverMessage = solution.error;
+    solverBlocked = true;
+  }
+  syncDesignControls();
+  render();
 }
 function material(environment) {
   const name = environment === 'indoor' ? 'PETG' : 'ASA';
@@ -297,8 +376,10 @@ function render() {
   const separateNeck = back && !inward;
   const partCount = separateNeck ? 4 : 3;
   material(input.environment);
+  const solverNote = document.querySelector('#solver-note');
+  solverNote.classList.toggle('hidden', !solverMessage || solverBlocked);
+  solverNote.textContent = solverMessage && !solverBlocked ? translateError(solverMessage) : '';
   set('#svg-status', svgImportError ? tr(svgImportError) : importedSvg ? `${tr('svgLoaded')} ${importedSvg.name}` : tr('svgHint'));
-  set('#cover-hint', tr(back ? separateNeck ? 'coverHintBackOut' : 'coverHintBackIn' : 'coverHintNeck'));
   set('#export-subtitle', tr(input.wallMount ? 'partsMount' : partCount === 4 ? 'parts4' : 'parts3'));
   set('#base-part-name', tr(back ? inward ? 'baseNeck' : 'basePort' : 'baseSockets'));
   set('#base-print-note', tr(back ? 'printBaseFront' : 'printBaseBottom'));
@@ -312,14 +393,12 @@ function render() {
   set('#joiner-print-note', tr('joinerNote'));
   set('#mount-part-name', tr('mountPart'));
   set('#mount-print-note', tr('mountNote'));
-  set('#assembly-note', tr(back ? separateNeck ? 'assemblyBackOut' : 'assemblyBackIn' : 'assemblyFront'));
-  if (input.wallMount) set('#assembly-note', document.querySelector('#assembly-note').textContent + tr('mountAssembly'));
   if (separateNeck) set('#print-advice', document.querySelector('#print-advice').textContent + tr('neckGlueAdvice'));
   document.querySelector('#neck-part').classList.toggle('hidden', !separateNeck);
   downloadButtons.neck.classList.toggle('hidden', !separateNeck);
   document.querySelector('.export-actions').classList.toggle('has-neck', separateNeck);
 
-  const result = autoDesign(input);
+  const result = solverBlocked ? { errors: [solverMessage] } : calculateDesign(input, designValues);
   currentResult = result.errors.length ? null : result;
   const segmentedXY = !!currentResult && (result.splitX > 1 || result.splitY > 1);
   document.querySelector('#joiner-part').classList.toggle('hidden', !segmentedXY);
@@ -344,7 +423,6 @@ function render() {
   if (segmented) set('#export-subtitle', tr('segmentedParts'));
   set('#download-base span[data-i18n]', tr(segmented ? 'downloadBaseZip' : 'downloadBase'));
   set('#download-lid span[data-i18n]', tr(segmentedXY ? 'downloadLidZip' : 'downloadLid'));
-  if (segmentedXY) set('#assembly-note', document.querySelector('#assembly-note').textContent + tr('seamAssembly'));
   document.querySelector('#drawing').innerHTML = drawing(result);
   const n = result.input;
   const outer = n.shape === 'round' && Math.abs(n.width - n.depth) < 0.01 ? `Ø ${fmt(n.width)}` : `${fmt(result.footprintX)} × ${fmt(result.footprintY)}`;
@@ -353,7 +431,8 @@ function render() {
     stat(tr('statOuter'), outer), stat(tr('statInner'), inner),
     stat(tr('statCavityHeight'), fmt(result.cavityHeight)), stat(tr('statBaseHeight'), fmt(result.baseHeight)),
     stat(tr('statLidHeight'), fmt(result.lidHeight)),
-    stat(tr('statNeckHole'), `Ø ${fmt(n.neckDiameter)}`), stat(tr('statNeckLength'), fmt(n.neckLength)),
+    stat(tr('statNeckHole'), `Ø ${fmt(n.neckDiameter)}`), stat(tr('statNeckArea'), fmt(Math.PI * (n.neckDiameter / 2) ** 2, 'mm²')),
+    stat(tr('statNeckLength'), fmt(n.neckLength)),
     stat(tr('statDirection'), tr(inward ? 'inward' : 'outward')),
     stat(tr('statCover'), tr(back ? 'coverBack' : 'coverNeck')),
     ...(inward ? [stat(tr('statTipClearance'), fmt(result.tipClearance)), stat(tr('statDisplaced'), fmt(result.displacedVolume / 1000, 'cm³'))] : []),
@@ -394,11 +473,27 @@ async function download(part) {
   }
 }
 
-form.addEventListener('input', render);
-form.addEventListener('change', event => {
-  if (event.target.name === 'shape' && event.target.value === 'svg') document.querySelector('.advanced').open = true;
+for (const key of DESIGN_VARIABLES) {
+  document.querySelector(`[data-design="${key}"]`).addEventListener('input', event => updateDesignValue(key, event.target.value));
+  document.querySelector(`[data-design-number="${key}"]`).addEventListener('change', event => updateDesignValue(key, event.target.value));
+  document.querySelector(`[data-lock="${key}"]`).addEventListener('click', () => {
+    designLocks[key] = !designLocks[key];
+    if (solverBlocked) resolveLayoutChange(); else { syncDesignControls(); render(); }
+  });
+}
+form.addEventListener('input', event => {
+  if (event.target.dataset.design || event.target.dataset.designNumber ||
+      ['shape', 'neckDirection', 'coverPlacement', 'temperature'].includes(event.target.name) || event.target.id === 'svg-file') return;
   render();
 });
+form.addEventListener('change', event => {
+  if (event.target.dataset.design || event.target.dataset.designNumber || event.target.id === 'svg-file') return;
+  if (event.target.name === 'shape' && event.target.value === 'svg') document.querySelector('.advanced').open = true;
+  if (['shape', 'neckDirection', 'coverPlacement', 'temperature'].includes(event.target.name)) resolveLayoutChange();
+  else render();
+});
+printPanel.addEventListener('input', render);
+printPanel.addEventListener('change', render);
 document.querySelector('#svg-file').addEventListener('change', async event => {
   const file = event.target.files[0];
   importedSvg = null;
@@ -413,7 +508,7 @@ document.querySelector('#svg-file').addEventListener('change', async event => {
       svgImportError = error.message === 'concaveSvg' ? 'svgConcave' : error.message === 'openSvg' ? 'svgOpen' : 'svgInvalid';
     }
   }
-  render();
+  resolveLayoutChange();
 });
 languageSelect.addEventListener('change', () => {
   language = languageSelect.value;
@@ -422,5 +517,6 @@ languageSelect.addEventListener('change', () => {
   render();
 });
 for (const [part, button] of Object.entries(downloadButtons)) button.addEventListener('click', () => download(part));
+initializeDesign();
 applyLanguage();
 render();

@@ -24,10 +24,15 @@
       <form id="config" class="panel controls" novalidate>
         <div class="panel-heading"><span class="step">01</span><div><h2 data-i18n="designTitle">Zaprojektuj</h2><p data-i18n="designSubtitle">Wybierz częstotliwość i układ.</p></div></div>
 
-        <section class="form-section primary-section">
-          <label class="frequency-label" for="frequency" data-i18n="frequencyLabel">Częstotliwość docelowa</label>
-          <div class="frequency-input"><input id="frequency" name="frequency" type="number" min="1" step="1" value="120" required><span>Hz</span></div>
-          <p class="hint" data-i18n="frequencyHint">Wymiary komory i szyjki dobierają się automatycznie.</p>
+        <section class="form-section primary-section parameters-section">
+          <h3 data-i18n="parametersTitle">Parametry rezonatora</h3>
+          <div class="parameter-row" data-variable="frequency"><div class="parameter-head"><label for="range-frequency" data-i18n="frequencyLabel">Częstotliwość</label><button type="button" class="parameter-lock" data-lock="frequency" aria-pressed="true">🔒</button></div><div class="parameter-controls"><input id="range-frequency" data-design="frequency" type="range" min="1" max="1000" step="1" value="120"><input id="number-frequency" data-design-number="frequency" type="number" min="1" max="1000" step="1" value="120"><span>Hz</span></div></div>
+          <div class="parameter-row" data-variable="width"><div class="parameter-head"><label for="range-width" data-i18n="widthLabel">Szerokość korpusu</label><button type="button" class="parameter-lock" data-lock="width" aria-pressed="false">🔓</button></div><div class="parameter-controls"><input id="range-width" data-design="width" type="range" min="60" max="1200" step="1" value="145"><input id="number-width" data-design-number="width" type="number" min="60" max="1200" step="0.1" value="145"><span>mm</span></div></div>
+          <div class="parameter-row" data-variable="depth"><div class="parameter-head"><label for="range-depth" data-i18n="depthLabel">Głębokość korpusu</label><button type="button" class="parameter-lock" data-lock="depth" aria-pressed="false">🔓</button></div><div class="parameter-controls"><input id="range-depth" data-design="depth" type="range" min="60" max="1200" step="1" value="145"><input id="number-depth" data-design-number="depth" type="number" min="60" max="1200" step="0.1" value="145"><span>mm</span></div></div>
+          <div class="parameter-row" data-variable="cavityHeight"><div class="parameter-head"><label for="range-cavityHeight" data-i18n="heightLabel">Wysokość komory</label><button type="button" class="parameter-lock" data-lock="cavityHeight" aria-pressed="false">🔓</button></div><div class="parameter-controls"><input id="range-cavityHeight" data-design="cavityHeight" type="range" min="3" max="1800" step="1" value="109"><input id="number-cavityHeight" data-design-number="cavityHeight" type="number" min="3" max="1800" step="0.1" value="109"><span>mm</span></div></div>
+          <div class="parameter-row" data-variable="neckDiameter"><div class="parameter-head"><label for="range-neckDiameter" data-i18n="neckDiameterLabel">Średnica szyjki</label><button type="button" class="parameter-lock" data-lock="neckDiameter" aria-pressed="true">🔒</button></div><div class="parameter-controls"><input id="range-neckDiameter" data-design="neckDiameter" type="range" min="4" max="40" step="0.5" value="20"><input id="number-neckDiameter" data-design-number="neckDiameter" type="number" min="4" max="40" step="0.1" value="20"><span>mm</span></div></div>
+          <div class="parameter-row" data-variable="neckLength"><div class="parameter-head"><label for="range-neckLength" data-i18n="neckLengthLabel">Długość szyjki</label><button type="button" class="parameter-lock" data-lock="neckLength" aria-pressed="true">🔒</button></div><div class="parameter-controls"><input id="range-neckLength" data-design="neckLength" type="range" min="8" max="120" step="0.5" value="30"><input id="number-neckLength" data-design-number="neckLength" type="number" min="8" max="120" step="0.1" value="30"><span>mm</span></div></div>
+          <p id="solver-note" class="solver-note hidden" role="alert"></p>
         </section>
 
         <section class="form-section shape-section">
@@ -57,35 +62,15 @@
             <label><input type="radio" name="coverPlacement" value="neck" checked><span data-i18n="coverNeck">Przy szyjce</span></label>
             <label><input type="radio" name="coverPlacement" value="back"><span data-i18n="coverBack">Tylna ścianka</span></label>
           </div>
-          <p class="hint" id="cover-hint"></p>
         </section>
 
         <details class="advanced">
-          <summary><b data-i18n="settingsSummary">Drukarka i warunki pracy</b><span>⌄</span></summary>
+          <summary><b data-i18n="designAdvancedTitle">Obrys SVG i temperatura</b><span>⌄</span></summary>
           <div class="advanced-content">
-            <h3 data-i18n="proportionsTitle">Proporcje korpusu</h3>
-            <div class="field-grid three">
-              <label class="field"><span><b data-i18n="widthFactorLabel">Szerokość</b><em>×</em></span><input name="widthFactor" type="number" min="0.5" max="2" step="0.1" value="1"></label>
-              <label class="field"><span><b data-i18n="depthFactorLabel">Głębokość</b><em>×</em></span><input name="depthFactor" type="number" min="0.5" max="2" step="0.1" value="1"></label>
-              <label class="field"><span><b data-i18n="heightFactorLabel">Wysokość</b><em>×</em></span><input name="heightFactor" type="number" min="0.5" max="2" step="0.1" value="1"></label>
-            </div>
-            <p class="hint" data-i18n="proportionsHint">Wysokość 0,5× daje płytszy korpus, 2× wyższy. Objętość komory pozostaje zgodna z częstotliwością.</p>
-            <h3 class="spaced-title" data-i18n="svgTitle">Własny obrys SVG</h3>
+            <h3 data-i18n="svgTitle">Własny obrys SVG</h3>
             <label class="field"><span data-i18n="svgLabel">Jeden zamknięty, wypukły obrys</span><input id="svg-file" type="file" accept=".svg,image/svg+xml"></label>
             <p id="svg-status" class="hint" data-i18n="svgHint">Wybierz kształt „Z pliku SVG”, a następnie wczytaj plik.</p>
-            <h3 data-i18n="printerVolumeTitle">Pole robocze drukarki</h3>
-            <div class="field-grid three">
-              <label class="field"><span>X <em>mm</em></span><input name="bedX" type="number" min="1" step="1" value="256" required></label>
-              <label class="field"><span>Y <em>mm</em></span><input name="bedY" type="number" min="1" step="1" value="256" required></label>
-              <label class="field"><span>Z <em>mm</em></span><input name="bedZ" type="number" min="1" step="1" value="256" required></label>
-            </div>
-            <h3 class="spaced-title" data-i18n="dowelFitTitle">Spasowanie kołków</h3>
-            <label class="field"><span><b data-i18n="dowelClearanceLabel">Luz na stronę</b><em>mm</em></span><input name="pinClearance" type="number" min="0.1" max="0.4" step="0.05" value="0.25" required></label>
-            <h3 class="spaced-title" data-i18n="wallMountTitle">Mocowanie do ściany</h3>
-            <label class="mount-toggle"><input name="wallMount" type="checkbox"><span data-i18n="wallMountLabel">Dodaj mocowania typu keyhole i kołki do oznaczenia wiercenia</span></label>
-            <p class="hint" data-i18n="wallMountHint">Dwie płytki i cztery dystanse do przyklejenia na tylnej ściance; dwa kołki do oznaczenia otworów. Po sklejeniu sprawdź nośność.</p>
             <h3 class="spaced-title" data-i18n="conditionsTitle">Warunki pracy</h3>
-            <label class="field"><span data-i18n="environmentLabel">Materiał do warunków</span><select name="environment"><option value="indoor" data-i18n="indoor">Wewnątrz</option><option value="warm" data-i18n="warm">Wyższa temperatura</option><option value="outdoor" data-i18n="outdoor">Na zewnątrz / w słońcu</option></select></label>
             <label class="field spaced"><span><b data-i18n="temperatureLabel">Temperatura powietrza</b><em>°C</em></span><input name="temperature" type="number" min="-20" max="50" step="1" value="20" required></label>
           </div>
         </details>
@@ -121,13 +106,25 @@
             <button type="button" id="download-joiner" class="hidden"><span data-i18n="downloadJoiner">Pobierz łącznik STL</span><span>↓</span></button>
             <button type="button" id="download-mount" class="hidden"><span data-i18n="downloadMount">Pobierz mocowania ZIP</span><span>↓</span></button>
           </div>
-          <p class="assembly-note" id="assembly-note"></p>
         </section>
 
-        <section class="material-card"><div class="material-icon">M</div><div><span class="eyebrow" data-i18n="materialTitle">ZALECANY MATERIAŁ</span><h2 id="material-name">PETG</h2><p id="material-description"></p></div></section>
-
         <section class="panel print-panel">
-          <div class="panel-heading"><span class="step">04</span><div><h2 data-i18n="printTitle">Ustawienia druku</h2><p data-i18n="printSubtitle">Punkt wyjścia dla dyszy 0,4 mm</p></div></div>
+          <div class="panel-heading"><span class="step">04</span><div><h2 data-i18n="printTitle">Ustawienia druku</h2><p data-i18n="printSubtitle">Drukarka, materiał i parametry</p></div></div>
+          <div class="advanced-content print-controls">
+            <h3 data-i18n="printerVolumeTitle">Pole robocze drukarki</h3>
+            <div class="field-grid three">
+              <label class="field"><span>X <em>mm</em></span><input form="config" name="bedX" type="number" min="1" step="1" value="256" required></label>
+              <label class="field"><span>Y <em>mm</em></span><input form="config" name="bedY" type="number" min="1" step="1" value="256" required></label>
+              <label class="field"><span>Z <em>mm</em></span><input form="config" name="bedZ" type="number" min="1" step="1" value="256" required></label>
+            </div>
+            <h3 class="spaced-title" data-i18n="dowelFitTitle">Spasowanie kołków</h3>
+            <label class="field"><span><b data-i18n="dowelClearanceLabel">Luz na stronę</b><em>mm</em></span><input form="config" name="pinClearance" type="number" min="0.1" max="0.4" step="0.05" value="0.25" required></label>
+            <h3 class="spaced-title" data-i18n="wallMountTitle">Mocowanie do ściany</h3>
+            <label class="mount-toggle"><input form="config" name="wallMount" type="checkbox"><span data-i18n="wallMountLabel">Dodaj mocowania typu keyhole i kołki do oznaczenia wiercenia</span></label>
+            <p class="hint" data-i18n="wallMountHint">Dwie płytki i cztery dystanse do przyklejenia na tylnej ściance; dwa kołki do oznaczenia otworów. Po sklejeniu sprawdź nośność.</p>
+            <h3 class="spaced-title" data-i18n="environmentLabel">Materiał do warunków</h3>
+            <label class="field"><select form="config" name="environment"><option value="indoor" data-i18n="indoor">Wewnątrz</option><option value="warm" data-i18n="warm">Wyższa temperatura</option><option value="outdoor" data-i18n="outdoor">Na zewnątrz / w słońcu</option></select></label>
+          </div>
           <div class="print-grid">
             <div><span data-i18n="layerLabel">Warstwa</span><strong data-i18n="layerValue">0,20 mm</strong></div>
             <div><span data-i18n="wallsLabel">Obrysy</span><strong>5–6</strong></div>
@@ -141,12 +138,15 @@
           <p class="print-sources"><a href="https://help.prusa3d.com/article/watertight-prints_112324" target="_blank" rel="noopener" data-i18n="sourceAirtight">Szczelność wydruków</a> · <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748" target="_blank" rel="noopener" data-i18n="sourceLayers">Warstwy i obrysy</a></p>
         </section>
 
+        <section class="material-card"><div class="material-icon">M</div><div><span class="eyebrow" data-i18n="materialTitle">ZALECANY MATERIAŁ</span><h2 id="material-name">PETG</h2><p id="material-description"></p></div></section>
+
         <p class="method-note"><span data-i18n="methodNote">Obliczenia korzystają z przybliżonego modelu Helmholtza. Gotowy wydruk warto zmierzyć po uszczelnieniu połączeń.</span> <a href="https://phys.unsw.edu.au/jw/Helmholtz.html" target="_blank" rel="noopener" data-i18n="sourceFormula">Podstawa wzoru</a> · <a href="https://help.prusa3d.com/filament-material-guide" target="_blank" rel="noopener" data-i18n="sourceMaterials">Materiały</a></p>
       </div>
     </main>
   </div>
   <script src="profiles.js" defer></script>
   <script src="geometry.js" defer></script>
+  <script src="solver.js" defer></script>
   <script src="split.js" defer></script>
   <script src="parts.js" defer></script>
   <script src="zip.js" defer></script>
