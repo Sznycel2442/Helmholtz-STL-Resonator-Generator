@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1eb">
+  <title>Generator rezonatora Helmholtza</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="custom.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="masthead">
+      <div class="mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div>
+        <p class="eyebrow">PROJEKTOWANIE DO DRUKU 3D</p>
+        <h1>Rezonator Helmholtza</h1>
+        <p class="lead">Podaj częstotliwość. Generator sam dobierze komorę i szyjkę oraz przygotuje trzy pliki STL.</p>
+      </div>
+    </header>
+
+    <main class="layout">
+      <form id="config" class="panel controls" novalidate>
+        <div class="panel-heading"><span class="step">01</span><div><h2>Zaprojektuj</h2><p>Wystarczą częstotliwość i kształt.</p></div></div>
+
+        <section class="form-section primary-section">
+          <label class="frequency-label" for="frequency">Częstotliwość docelowa</label>
+          <div class="frequency-input"><input id="frequency" name="frequency" type="number" min="1" step="1" value="120" required><span>Hz</span></div>
+          <p class="hint">Wysokość komory, szerokość korpusu i szyjka dobierają się automatycznie.</p>
+        </section>
+
+        <section class="form-section shape-section">
+          <h3>Kształt korpusu</h3>
+          <div class="shape-switch" role="group" aria-label="Kształt korpusu">
+            <label><input type="radio" name="shape" value="round" checked><span><i class="shape-icon round-icon"></i>Okrągły</span></label>
+            <label><input type="radio" name="shape" value="box"><span><i class="shape-icon box-icon"></i>Prostokątny</span></label>
+            <label><input type="radio" name="shape" value="hex"><span><i class="shape-icon hex-icon"></i>Heksagonalny</span></label>
+          </div>
+        </section>
+
+        <section class="form-section direction-section">
+          <h3>Kierunek szyjki</h3>
+          <div class="shape-switch direction-switch" role="group" aria-label="Kierunek szyjki">
+            <label><input type="radio" name="neckDirection" value="outward" checked><span>Na zewnątrz</span></label>
+            <label><input type="radio" name="neckDirection" value="inward"><span>Do środka</span></label>
+          </div>
+        </section>
+
+        <details class="advanced">
+          <summary>Ustawienia drukarki i materiału <span>⌄</span></summary>
+          <div class="advanced-content">
+            <h3>Pole robocze drukarki</h3>
+            <div class="field-grid three">
+              <label class="field"><span>X <em>mm</em></span><input name="bedX" type="number" min="1" step="1" value="256" required></label>
+              <label class="field"><span>Y <em>mm</em></span><input name="bedY" type="number" min="1" step="1" value="256" required></label>
+              <label class="field"><span>Z <em>mm</em></span><input name="bedZ" type="number" min="1" step="1" value="256" required></label>
+            </div>
+            <h3 class="spaced-title">Spasowanie kołków</h3>
+            <label class="field"><span>Luz na stronę <em>mm</em></span><input name="pinClearance" type="number" min="0.1" max="0.4" step="0.05" value="0.25" required></label>
+            <h3 class="spaced-title">Warunki pracy</h3>
+            <label class="field"><span>Materiał do warunków</span><select name="environment"><option value="indoor">Wewnątrz</option><option value="warm">Wyższa temperatura</option><option value="outdoor">Na zewnątrz / w słońcu</option></select></label>
+            <label class="field spaced"><span>Temperatura powietrza <em>°C</em></span><input name="temperature" type="number" min="-20" max="50" step="1" value="20" required></label>
+          </div>
+        </details>
+      </form>
+
+      <div class="results-column">
+        <section class="panel result-panel" aria-live="polite">
+          <div class="panel-heading"><span class="step">02</span><div><h2>Gotowy projekt</h2><p id="status-text">Przeliczanie…</p></div></div>
+          <div id="error-box" class="error-box hidden" role="alert"></div>
+          <div id="result-content">
+            <div class="hero-result"><div><span>Objętość komory</span><strong id="volume">—</strong></div><span id="fit-badge" class="fit-badge">—</span></div>
+            <div class="drawing" id="drawing" role="img" aria-label="Schemat rezonatora"></div>
+            <div class="stats" id="stats"></div>
+          </div>
+        </section>
+
+        <section class="panel export-panel">
+          <div class="panel-heading"><span class="step">03</span><div><h2>Pliki do druku</h2><p>Trzy osobne wydruki, bez podpór w komorze.</p></div></div>
+          <div class="part-list"><div><span class="part-icon">▣</span><div><strong>Baza z gniazdami</strong><small>Druk dnem na stole</small></div></div><div><span class="part-icon">◉</span><div><strong>Pokrywa z gniazdami i szyjką</strong><small id="lid-print-note">Druk wewnętrzną stroną na stole</small></div></div><div><span class="part-icon">●</span><div><strong id="dowel-part-name">Kołki ×4</strong><small id="dowel-print-note">Druk pionowo, osobny plik STL</small></div></div></div>
+          <div class="export-actions"><button type="button" id="download-base">Pobierz bazę STL <span>↓</span></button><button type="button" id="download-lid">Pobierz pokrywę STL <span>↓</span></button><button type="button" id="download-dowels">Pobierz kołki STL <span>↓</span></button></div>
+          <p class="assembly-note">Wsuń kołki w gniazda bazy, załóż pokrywę i sklej płaski styk szczelnie. Gniazda są nieco głębsze od połowy kołka.</p>
+        </section>
+
+        <section class="material-card"><div class="material-icon">M</div><div><span class="eyebrow">ZALECANY MATERIAŁ</span><h2 id="material-name">PETG</h2><p id="material-description"></p></div></section>
+        <p class="method-note">Częstotliwość jest obliczona z przybliżonego modelu Helmholtza z korekcją końców szyjki. Gotowy wydruk warto zmierzyć po sklejeniu. <a href="https://phys.unsw.edu.au/jw/Helmholtz.html" target="_blank" rel="noopener">Podstawa wzoru</a> · <a href="https://help.prusa3d.com/filament-material-guide" target="_blank" rel="noopener">Materiały</a></p>
+      </div>
+    </main>
+  </div>
+  <script src="geometry.js" defer></script>
+  <script src="app.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const status = document.querySelector('#status-text');
+      if (status.textContent === 'Przeliczanie…') status.textContent = 'Nie udało się uruchomić obliczeń. Odśwież stronę.';
+    });
+  </script>
+</body>
+</html>
