@@ -488,7 +488,6 @@ form.addEventListener('input', event => {
 });
 form.addEventListener('change', event => {
   if (event.target.dataset.design || event.target.dataset.designNumber || event.target.id === 'svg-file') return;
-  if (event.target.name === 'shape' && event.target.value === 'svg') document.querySelector('.advanced').open = true;
   if (['shape', 'neckDirection', 'coverPlacement', 'temperature'].includes(event.target.name)) resolveLayoutChange();
   else render();
 });
@@ -503,7 +502,6 @@ document.querySelector('#svg-file').addEventListener('change', async event => {
       if (file.size > 1000000) throw new Error('invalidSvg');
       importedSvg = { ...importSvgOutline(await file.text()), name: file.name };
       form.querySelector('input[name="shape"][value="svg"]').checked = true;
-      document.querySelector('.advanced').open = true;
     } catch (error) {
       svgImportError = error.message === 'concaveSvg' ? 'svgConcave' : error.message === 'openSvg' ? 'svgOpen' : 'svgInvalid';
     }
