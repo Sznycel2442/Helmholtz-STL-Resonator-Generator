@@ -199,7 +199,7 @@ function drawing(result) {
   const x0 = 132, x1 = 346, baseBottom = 187, baseTop = baseBottom - sideHeight;
   const wallPx = Math.max(8, Math.min(17, n.wall / bodyWidth * 428));
   const bottomPx = Math.max(8, Math.min(16, n.bottom / result.baseHeight * sideHeight * 1.5));
-  const lidY = baseTop - 15, lidHeight = 9, center = (x0 + x1) / 2;
+  const lidHeight = 9, lidY = baseTop - lidHeight, center = (x0 + x1) / 2;
   const neckHalf = Math.max(13, Math.min(34, n.neckDiameter / bodyWidth * 107));
   let baseDrawing, lidDrawing, neckLabelY;
   if (back) {
@@ -225,7 +225,6 @@ function drawing(result) {
     <g fill="none" stroke="#3b735b" stroke-width="1.5">${topPins}</g>
     <text x="64" y="164" text-anchor="middle" fill="#7d9081" font-size="10" font-family="Arial">${tr('topView')}</text>
     ${baseDrawing}${lidDrawing}
-    <path d="M${x0} ${baseTop-4}H${x1}" stroke="#86aa90" stroke-dasharray="4 4"/>
     <path d="M${x0} 202H${x1}M${x0} 197v10M${x1} 197v10" stroke="#9aa99d" stroke-width="1"/>
     <text x="239" y="219" text-anchor="middle" fill="#65766a" font-size="12" font-family="Arial">${widthLabel} mm</text>
     <path d="M${x1+19} ${baseTop}V${baseBottom}M${x1+14} ${baseTop}h10M${x1+14} ${baseBottom}h10" stroke="#9aa99d" stroke-width="1"/>
